@@ -1,0 +1,141 @@
+{
+  "model": "LogisticRegression",
+  "threshold": 0.5,
+  "random_state": 42,
+  "class_weight": null,
+  "regularization": "L2",
+  "C": 1.0,
+  "solver": "lbfgs",
+  "max_iter": 2000,
+  "number_of_features": 13,
+  "feature_names": [
+    "RevolvingUtilizationOfUnsecuredLines",
+    "age",
+    "NumberOfTime30-59DaysPastDueNotWorse",
+    "DebtRatio",
+    "MonthlyIncome",
+    "NumberOfOpenCreditLinesAndLoans",
+    "NumberOfTimes90DaysLate",
+    "NumberRealEstateLoansOrLines",
+    "NumberOfTime60-89DaysPastDueNotWorse",
+    "NumberOfDependents",
+    "MonthlyIncome_missing",
+    "NumberOfDependents_missing",
+    "has_special_delinquency_value"
+  ],
+  "train": {
+    "rows": 104998,
+    "roc_auc": 0.8148580119347769,
+    "average_precision": 0.35272339941466563,
+    "precision": 0.5868421052631579,
+    "recall": 0.15790964452627107,
+    "f1": 0.2488561544470483,
+    "accuracy": 0.9358940170288957,
+    "confusion_matrix": [
+      [
+        97152,
+        785
+      ],
+      [
+        5946,
+        1115
+      ]
+    ],
+    "positive_prevalence": 0.06724889997904722,
+    "predicted_positive_rate": 0.0180955827730052,
+    "gini": 0.6297160238695538
+  },
+  "validation": {
+    "rows": 22486,
+    "roc_auc": 0.8127873607270689,
+    "average_precision": 0.33781063042125814,
+    "precision": 0.55,
+    "recall": 0.16373477672530445,
+    "f1": 0.2523461939520334,
+    "accuracy": 0.9362269856799786,
+    "confusion_matrix": [
+      [
+        20810,
+        198
+      ],
+      [
+        1236,
+        242
+      ]
+    ],
+    "positive_prevalence": 0.0657297874232856,
+    "predicted_positive_rate": 0.019567731032642532,
+    "gini": 0.6255747214541378
+  },
+  "convergence": {
+    "warning": false,
+    "n_iter": [
+      26
+    ],
+    "converged": true
+  },
+  "coefficients": [
+    {
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "coefficient": -0.009830793210670484
+    },
+    {
+      "feature": "age",
+      "coefficient": -0.39784821567500633
+    },
+    {
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "coefficient": 0.39109300482054327
+    },
+    {
+      "feature": "DebtRatio",
+      "coefficient": -0.0933746872321235
+    },
+    {
+      "feature": "MonthlyIncome",
+      "coefficient": -0.4417911649973946
+    },
+    {
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "coefficient": -0.005832758475223272
+    },
+    {
+      "feature": "NumberOfTimes90DaysLate",
+      "coefficient": 0.40737859119186143
+    },
+    {
+      "feature": "NumberRealEstateLoansOrLines",
+      "coefficient": 0.10802957541791056
+    },
+    {
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "coefficient": 0.2578390672688681
+    },
+    {
+      "feature": "NumberOfDependents",
+      "coefficient": 0.06560046384264873
+    },
+    {
+      "feature": "MonthlyIncome_missing",
+      "coefficient": 0.03413782640120494
+    },
+    {
+      "feature": "NumberOfDependents_missing",
+      "coefficient": -0.07886944387986755
+    },
+    {
+      "feature": "has_special_delinquency_value",
+      "coefficient": 3.145318169964379
+    }
+  ],
+  "intercept": -3.0275483205505442,
+  "notes": [
+    "ROC-AUC measures ranking across thresholds; Average Precision summarizes the precision-recall curve.",
+    "Accuracy alone is insufficient for rare positives; compare Average Precision with prevalence.",
+    "Classification metrics use the unoptimized 0.5 threshold, not a final operating threshold.",
+    "Probabilities are baseline risk scores, not validated calibrated PD estimates.",
+    "Coefficients are conditional log-odds associations, not causal effects or SHAP explanations.",
+    "Ten numeric features are standardized; three binary indicators are unscaled, limiting magnitude comparisons.",
+    "Only training data fitted preprocessing and model; test set remains locked for modeling/evaluation."
+  ]
+}
