@@ -1,0 +1,53 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environment variables
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Visual Studio local settings
+.vs/
+*.suo
+*.user
+
+# Datasets: retain directory placeholders only
+/data/raw/*
+!/data/raw/.gitkeep
+/data/processed/*
+!/data/processed/.gitkeep
+
+# Models: retain directory placeholder only
+/models/*
+!/models/.gitkeep
+*.pkl
+*.pickle
+*.joblib
+*.onnx
+*.h5
+*.hdf5
+*.keras
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Python build and packaging outputs
+build/
+dist/
+*.egg-info/
+
+# Test coverage outputs
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
