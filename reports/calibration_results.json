@@ -1,0 +1,325 @@
+{
+  "random_state": 42,
+  "candidate_definitions": {
+    "Logistic Balanced": {
+      "estimator": "LogisticRegression",
+      "parameters": {
+        "class_weight": "balanced",
+        "C": 1.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "l1_ratio": 0.0,
+        "random_state": 42
+      },
+      "preprocessor": "build_linear_preprocessor",
+      "regularization_note": "Logistic uses the existing sklearn default L2 (l1_ratio=0); deprecated penalty spelling is unchanged."
+    },
+    "XGBoost Baseline": {
+      "estimator": "XGBClassifier",
+      "parameters": {
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "min_child_weight": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "reg_alpha": 0,
+        "reg_lambda": 1,
+        "objective": "binary:logistic",
+        "eval_metric": "logloss",
+        "tree_method": "hist",
+        "random_state": 42,
+        "n_jobs": -1,
+        "verbosity": null
+      },
+      "preprocessor": "build_tree_preprocessor",
+      "regularization_note": "Logistic uses the existing sklearn default L2 (l1_ratio=0); deprecated penalty spelling is unchanged."
+    },
+    "LightGBM Tuned (LGBM-02)": {
+      "estimator": "LGBMClassifier",
+      "parameters": {
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "max_depth": -1,
+        "min_child_weight": 0.001,
+        "min_child_samples": 20,
+        "num_leaves": 15,
+        "subsample": 1.0,
+        "subsample_freq": 0,
+        "colsample_bytree": 1.0,
+        "reg_alpha": 0,
+        "reg_lambda": 0,
+        "objective": null,
+        "random_state": 42,
+        "n_jobs": -1,
+        "verbosity": -1
+      },
+      "preprocessor": "build_tree_preprocessor",
+      "regularization_note": "Logistic uses the existing sklearn default L2 (l1_ratio=0); deprecated penalty spelling is unchanged."
+    }
+  },
+  "calibration_states": [
+    "uncalibrated",
+    "sigmoid",
+    "isotonic"
+  ],
+  "reference_reproduction": {
+    "Logistic Balanced": "PASS",
+    "XGBoost Baseline": "PASS",
+    "LightGBM Tuned (LGBM-02)": "PASS"
+  },
+  "reference_tolerance": {
+    "rtol": 1e-06,
+    "atol": 1e-08
+  },
+  "calibration_design": {
+    "splitter": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "shuffle": true,
+    "random_state": 42,
+    "groups": "raw training feature-group metadata",
+    "explicit_cv_splits": true,
+    "ensemble": true,
+    "outer_n_jobs": 1,
+    "fitting_partition": "training only",
+    "prediction": "mean of five fold-specific calibrated probability estimates",
+    "calibration_input": "decision_function if available (Logistic), otherwise predict_proba (boosting)"
+  },
+  "group_leakage_checks": [
+    {
+      "fold": 1,
+      "fitting_rows": 83998,
+      "calibration_rows": 21000,
+      "row_overlap": 0,
+      "group_overlap": 0
+    },
+    {
+      "fold": 2,
+      "fitting_rows": 83999,
+      "calibration_rows": 20999,
+      "row_overlap": 0,
+      "group_overlap": 0
+    },
+    {
+      "fold": 3,
+      "fitting_rows": 83999,
+      "calibration_rows": 20999,
+      "row_overlap": 0,
+      "group_overlap": 0
+    },
+    {
+      "fold": 4,
+      "fitting_rows": 83999,
+      "calibration_rows": 20999,
+      "row_overlap": 0,
+      "group_overlap": 0
+    },
+    {
+      "fold": 5,
+      "fitting_rows": 83997,
+      "calibration_rows": 21001,
+      "row_overlap": 0,
+      "group_overlap": 0
+    }
+  ],
+  "validation_rows": 22486,
+  "validation_prevalence": 0.0657297874232856,
+  "metrics": [
+    {
+      "model": "Logistic Balanced",
+      "calibration_method": "uncalibrated",
+      "brier_score": 0.15876874183977072,
+      "log_loss": 0.5330396945972671,
+      "ece": 0.3089522600318941,
+      "mean_predicted_probability": 0.3746820474551797,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.3089522600318941,
+      "roc_auc": 0.8180493873330812,
+      "average_precision": 0.3434052208526683
+    },
+    {
+      "model": "XGBoost Baseline",
+      "calibration_method": "uncalibrated",
+      "brier_score": 0.049105202543405925,
+      "log_loss": 0.1776873385307406,
+      "ece": 0.005417383903013608,
+      "mean_predicted_probability": 0.06821802941093476,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.002488241987649159,
+      "roc_auc": 0.863666393084869,
+      "average_precision": 0.38128449036768636
+    },
+    {
+      "model": "LightGBM Tuned (LGBM-02)",
+      "calibration_method": "uncalibrated",
+      "brier_score": 0.04903374303436725,
+      "log_loss": 0.17727209469459268,
+      "ece": 0.0046943432923444075,
+      "mean_predicted_probability": 0.0682825435493563,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.002552756126070699,
+      "roc_auc": 0.8641390366657151,
+      "average_precision": 0.38168512498191703
+    },
+    {
+      "model": "Logistic Balanced",
+      "calibration_method": "sigmoid",
+      "brier_score": 0.05234312408051106,
+      "log_loss": 0.1990518093968494,
+      "ece": 0.013474241295313981,
+      "mean_predicted_probability": 0.06912395373005188,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.003394166306766283,
+      "roc_auc": 0.8180748947240408,
+      "average_precision": 0.34347386386160916
+    },
+    {
+      "model": "Logistic Balanced",
+      "calibration_method": "isotonic",
+      "brier_score": 0.051089872340982126,
+      "log_loss": 0.19215258061154541,
+      "ece": 0.005113957745512483,
+      "mean_predicted_probability": 0.06926093942570333,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.0035311520024177284,
+      "roc_auc": 0.8182697589525789,
+      "average_precision": 0.3406625217108211
+    },
+    {
+      "model": "XGBoost Baseline",
+      "calibration_method": "sigmoid",
+      "brier_score": 0.05079458869031555,
+      "log_loss": 0.18939571452089607,
+      "ece": 0.020426942449645196,
+      "mean_predicted_probability": 0.06792065463764174,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.002190867214356143,
+      "roc_auc": 0.863478243870239,
+      "average_precision": 0.3815140894651936
+    },
+    {
+      "model": "XGBoost Baseline",
+      "calibration_method": "isotonic",
+      "brier_score": 0.04906978788118697,
+      "log_loss": 0.1775584830056977,
+      "ece": 0.003952232944011536,
+      "mean_predicted_probability": 0.06828564270361764,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.002555855280332045,
+      "roc_auc": 0.8635963604817857,
+      "average_precision": 0.381521804264093
+    },
+    {
+      "model": "LightGBM Tuned (LGBM-02)",
+      "calibration_method": "sigmoid",
+      "brier_score": 0.048955436854478486,
+      "log_loss": 0.17714237629741844,
+      "ece": 0.004419577085872548,
+      "mean_predicted_probability": 0.06841212417550963,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.0026823367522240266,
+      "roc_auc": 0.8642696332191769,
+      "average_precision": 0.38240087365423436
+    },
+    {
+      "model": "LightGBM Tuned (LGBM-02)",
+      "calibration_method": "isotonic",
+      "brier_score": 0.048917155984307896,
+      "log_loss": 0.17702275472089213,
+      "ece": 0.0036595395506037404,
+      "mean_predicted_probability": 0.06844055930335279,
+      "prevalence": 0.0657297874232856,
+      "mean_probability_gap": 0.0027107718800671865,
+      "roc_auc": 0.864285897401544,
+      "average_precision": 0.3834582432155661
+    }
+  ],
+  "binning": {
+    "strategy": "quantile",
+    "requested_bins": 10,
+    "duplicate_policy": "remove duplicate quantile edges; do not split identical scores; omit empty bins",
+    "actual_bins": [
+      {
+        "model": "Logistic Balanced",
+        "calibration_method": "uncalibrated",
+        "count": 10
+      },
+      {
+        "model": "XGBoost Baseline",
+        "calibration_method": "uncalibrated",
+        "count": 10
+      },
+      {
+        "model": "LightGBM Tuned (LGBM-02)",
+        "calibration_method": "uncalibrated",
+        "count": 10
+      },
+      {
+        "model": "Logistic Balanced",
+        "calibration_method": "sigmoid",
+        "count": 10
+      },
+      {
+        "model": "Logistic Balanced",
+        "calibration_method": "isotonic",
+        "count": 10
+      },
+      {
+        "model": "XGBoost Baseline",
+        "calibration_method": "sigmoid",
+        "count": 10
+      },
+      {
+        "model": "XGBoost Baseline",
+        "calibration_method": "isotonic",
+        "count": 10
+      },
+      {
+        "model": "LightGBM Tuned (LGBM-02)",
+        "calibration_method": "sigmoid",
+        "count": 10
+      },
+      {
+        "model": "LightGBM Tuned (LGBM-02)",
+        "calibration_method": "isotonic",
+        "count": 10
+      }
+    ],
+    "ece_definition": "sum(bin_count / total_count * abs(observed_positive_rate - mean_predicted_probability))"
+  },
+  "runtime_seconds": {
+    "by_model_and_state": {
+      "Logistic Balanced": {
+        "uncalibrated": 0.3049909999972442,
+        "sigmoid": 1.1542440000048373,
+        "isotonic": 1.1490141000103904
+      },
+      "XGBoost Baseline": {
+        "uncalibrated": 2.3623489000019617,
+        "sigmoid": 2.322303799999645,
+        "isotonic": 2.157278500002576
+      },
+      "LightGBM Tuned (LGBM-02)": {
+        "uncalibrated": 0.5917745000042487,
+        "sigmoid": 3.5729892999952426,
+        "isotonic": 3.9849472000059905
+      }
+    },
+    "calibration_by_model": {
+      "Logistic Balanced": 2.3032581000152277,
+      "XGBoost Baseline": 4.479582300002221,
+      "LightGBM Tuned (LGBM-02)": 7.557936500001233
+    },
+    "total_including_folds_references_and_evaluation": 34.55231650000496
+  },
+  "notes": [
+    "Test remains locked; no test labels, predictions, metrics or distributions are used by this experiment.",
+    "Preprocessing and base models fit only each fitting fold; calibrators use only the disjoint training calibration portion.",
+    "Outer validation is used only for evaluation; no calibration or base model is fitted on it.",
+    "Calibrated ensemble predictions differ from the full-train uncalibrated estimator: changes include ensembling as well as calibration.",
+    "Isotonic can create ties; neither method is assumed to preserve ensemble ranking exactly.",
+    "ECE is this project's bin-dependent implementation, not a universal regulatory metric. Mean probability alone does not establish calibration quality.",
+    "No final model, production threshold, regulatory model or production PD is declared; no threshold optimization is performed.",
+    "Wall-clock times describe this environment only, exclude data loading and export, and are not standardized hardware benchmarks."
+  ]
+}
