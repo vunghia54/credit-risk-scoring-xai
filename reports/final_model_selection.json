@@ -1,0 +1,395 @@
+{
+  "final_model": "XGBoost Baseline / XGB-01",
+  "preprocessing": {
+    "builder": "build_tree_preprocessor",
+    "module": "src.preprocessing",
+    "transformed_features": [
+      "RevolvingUtilizationOfUnsecuredLines",
+      "age",
+      "NumberOfTime30-59DaysPastDueNotWorse",
+      "DebtRatio",
+      "MonthlyIncome",
+      "NumberOfOpenCreditLinesAndLoans",
+      "NumberOfTimes90DaysLate",
+      "NumberRealEstateLoansOrLines",
+      "NumberOfTime60-89DaysPastDueNotWorse",
+      "NumberOfDependents",
+      "MonthlyIncome_missing",
+      "NumberOfDependents_missing",
+      "has_special_delinquency_value"
+    ],
+    "fit_partition": "training only",
+    "scaling": "none"
+  },
+  "model_parameters": {
+    "n_estimators": 300,
+    "learning_rate": 0.05,
+    "max_depth": 3,
+    "min_child_weight": 1,
+    "subsample": 1.0,
+    "colsample_bytree": 1.0,
+    "reg_alpha": 0,
+    "reg_lambda": 1,
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "random_state": 42,
+    "n_jobs": -1,
+    "tree_method": "hist"
+  },
+  "calibration_method": "none",
+  "default_audit_threshold": 0.5,
+  "development_operating_threshold": 0.19,
+  "development_threshold_selection_rule": {
+    "source": "STEP 12 validation RECALL_AT_LEAST_50 scenario",
+    "rule": "Among thresholds with recall >= 0.50, choose highest precision; ties: higher F1, then higher threshold.",
+    "historical_grid": {
+      "start": 0.05,
+      "stop": 0.95,
+      "step": 0.01
+    },
+    "status": "already selected and frozen; no search in this module",
+    "positive_rule": "score >= threshold"
+  },
+  "final_test_metrics_to_report": {
+    "threshold_independent": [
+      "roc_auc",
+      "average_precision",
+      "brier_score",
+      "log_loss",
+      "gini"
+    ],
+    "calibration_audit": [
+      "ece",
+      "mean_predicted_probability",
+      "observed_test_prevalence",
+      "reliability_bins"
+    ],
+    "classification_thresholds": [
+      0.5,
+      0.19
+    ],
+    "classification_metrics": [
+      "precision",
+      "recall",
+      "f1",
+      "accuracy",
+      "specificity",
+      "false_positive_rate",
+      "false_negative_rate",
+      "predicted_positive_rate",
+      "confusion_matrix"
+    ],
+    "confusion_matrix_order": [
+      [
+        "tn",
+        "fp"
+      ],
+      [
+        "fn",
+        "tp"
+      ]
+    ],
+    "gini_definition": "2 * ROC-AUC - 1",
+    "ece_definition": "sum(bin_count / total_count * abs(observed_positive_rate - mean_predicted_probability))",
+    "reliability_definition": {
+      "implementation": "src.calibration_analysis.reliability_bins",
+      "n_bins": 10,
+      "strategy": "quantile",
+      "duplicate_policy": "remove duplicate edges; do not split identical scores; omit empty bins"
+    }
+  },
+  "test_lock_policy": {
+    "step_14": "locked; no test evaluation, labels, prevalence or distributions inspected by this module",
+    "step_15": "evaluate only this frozen model as the final internal holdout evaluation",
+    "fit_partition": "training only; do not combine training and validation for this frozen evaluation",
+    "forbidden_after_test": [
+      "model reselection",
+      "hyperparameter changes",
+      "calibration changes",
+      "preprocessing changes",
+      "threshold changes or searches",
+      "test-driven feature selection",
+      "adding SMOTE or class weighting",
+      "switching to LightGBM based on test results"
+    ],
+    "performance_shortfall": "Report honestly even if test performance is lower than validation; do not retune."
+  },
+  "random_state": 42,
+  "limitations": [
+    "Selected from development evidence, not objectively or production best.",
+    "Repeated development use of validation can cause selection optimism.",
+    "No business cost matrix supports a bank-optimal threshold claim.",
+    "Calibration has only been audited internally on validation; scores are not regulatory or production-validated PD.",
+    "Development operating threshold 0.19 is neither a production threshold nor a regulatory cutoff.",
+    "STEP 14 contains a future test evaluation policy, not observed test metrics."
+  ],
+  "selection_evidence": {
+    "ranking": {
+      "XGBoost Baseline": {
+        "train_cv": {
+          "roc_auc": {
+            "mean": 0.8635574312476153,
+            "std": 0.0026617296634057932
+          },
+          "average_precision": {
+            "mean": 0.39887984341049254,
+            "std": 0.0047666896219804465
+          }
+        },
+        "validation": {
+          "rows": 22486,
+          "roc_auc": 0.863666393084869,
+          "average_precision": 0.38128449036768636,
+          "precision": 0.5688259109311741,
+          "recall": 0.19012178619756429,
+          "f1": 0.28498985801217036,
+          "accuracy": 0.9372943164635773,
+          "confusion_matrix": [
+            [
+              20795,
+              213
+            ],
+            [
+              1197,
+              281
+            ]
+          ],
+          "positive_prevalence": 0.0657297874232856,
+          "predicted_positive_rate": 0.02196922529573957,
+          "gini": 0.7273327861697381
+        }
+      },
+      "LightGBM LGBM-02": {
+        "train_cv": {
+          "average_precision": {
+            "mean": 0.3978005627030491,
+            "std": 0.004551363505403142
+          },
+          "roc_auc": {
+            "mean": 0.8633132752884661,
+            "std": 0.0027441703496446966
+          }
+        },
+        "validation": {
+          "rows": 22486,
+          "roc_auc": 0.8641390366657151,
+          "average_precision": 0.38168512498191703,
+          "precision": 0.5705394190871369,
+          "recall": 0.18606224627875506,
+          "f1": 0.28061224489795916,
+          "accuracy": 0.9372943164635773,
+          "confusion_matrix": [
+            [
+              20801,
+              207
+            ],
+            [
+              1203,
+              275
+            ]
+          ],
+          "positive_prevalence": 0.0657297874232856,
+          "predicted_positive_rate": 0.021435559903940228,
+          "gini": 0.7282780733314302
+        }
+      },
+      "XGBoost XGB-07 (historical)": {
+        "train_cv": {
+          "average_precision": {
+            "mean": 0.4003835260566827,
+            "std": 0.004925967662277159
+          },
+          "roc_auc": {
+            "mean": 0.8641801321120555,
+            "std": 0.002562083182832899
+          }
+        },
+        "validation": {
+          "rows": 22486,
+          "roc_auc": 0.8634877608323963,
+          "average_precision": 0.3820296657070958,
+          "precision": 0.5836734693877551,
+          "recall": 0.19350473612990526,
+          "f1": 0.29065040650406504,
+          "accuracy": 0.9379169260873432,
+          "confusion_matrix": [
+            [
+              20804,
+              204
+            ],
+            [
+              1192,
+              286
+            ]
+          ],
+          "positive_prevalence": 0.0657297874232856,
+          "predicted_positive_rate": 0.02179133683180646,
+          "gini": 0.7269755216647926
+        }
+      },
+      "Logistic Balanced": {
+        "train_cv": {
+          "roc_auc": {
+            "mean": 0.819722756938627,
+            "std": 0.0043844617089309834
+          },
+          "average_precision": {
+            "mean": 0.3569256283481765,
+            "std": 0.007950987225115254
+          }
+        },
+        "validation": {
+          "rows": 22486,
+          "roc_auc": 0.8180493873330812,
+          "average_precision": 0.3434052208526683,
+          "precision": 0.24952224952224952,
+          "recall": 0.618403247631935,
+          "f1": 0.3555728457498541,
+          "accuracy": 0.8526638797473984,
+          "confusion_matrix": [
+            [
+              18259,
+              2749
+            ],
+            [
+              564,
+              914
+            ]
+          ],
+          "positive_prevalence": 0.0657297874232856,
+          "predicted_positive_rate": 0.16290136084674908,
+          "gini": 0.6360987746661624
+        }
+      }
+    },
+    "threshold_tradeoffs": [
+      {
+        "scenario": "DEFAULT",
+        "threshold": 0.5,
+        "precision": 0.5688259109311741,
+        "recall": 0.1901217861975642,
+        "f1": 0.2849898580121703,
+        "specificity": 0.9898610053313024,
+        "false_positive_rate": 0.0101389946686976,
+        "false_negative_rate": 0.8098782138024357,
+        "predicted_positive_rate": 0.0219692252957395,
+        "tp": 281,
+        "fp": 213,
+        "tn": 20795,
+        "fn": 1197
+      },
+      {
+        "scenario": "RECALL_AT_LEAST_50",
+        "threshold": 0.19,
+        "precision": 0.3723030607124937,
+        "recall": 0.5020297699594046,
+        "f1": 0.4275424949582252,
+        "specificity": 0.940451256664128,
+        "false_positive_rate": 0.059548743335872,
+        "false_negative_rate": 0.4979702300405954,
+        "predicted_positive_rate": 0.088632927154674,
+        "tp": 742,
+        "fp": 1251,
+        "tn": 19757,
+        "fn": 736
+      }
+    ],
+    "xgboost_calibration": [
+      {
+        "model": "XGBoost Baseline",
+        "calibration_method": "uncalibrated",
+        "brier_score": 0.049105202543405925,
+        "log_loss": 0.1776873385307406,
+        "ece": 0.005417383903013608,
+        "mean_predicted_probability": 0.06821802941093476,
+        "prevalence": 0.0657297874232856,
+        "mean_probability_gap": 0.002488241987649159,
+        "roc_auc": 0.863666393084869,
+        "average_precision": 0.38128449036768636
+      },
+      {
+        "model": "XGBoost Baseline",
+        "calibration_method": "sigmoid",
+        "brier_score": 0.05079458869031555,
+        "log_loss": 0.18939571452089607,
+        "ece": 0.020426942449645196,
+        "mean_predicted_probability": 0.06792065463764174,
+        "prevalence": 0.0657297874232856,
+        "mean_probability_gap": 0.002190867214356143,
+        "roc_auc": 0.863478243870239,
+        "average_precision": 0.3815140894651936
+      },
+      {
+        "model": "XGBoost Baseline",
+        "calibration_method": "isotonic",
+        "brier_score": 0.04906978788118697,
+        "log_loss": 0.1775584830056977,
+        "ece": 0.003952232944011536,
+        "mean_predicted_probability": 0.06828564270361764,
+        "prevalence": 0.0657297874232856,
+        "mean_probability_gap": 0.002555855280332045,
+        "roc_auc": 0.8635963604817857,
+        "average_precision": 0.381521804264093
+      }
+    ],
+    "decision_basis": "User-approved development decision fixed before test; no automatic model selection.",
+    "rationale": [
+      "Baseline XGBoost exceeds LGBM-02 on train CV AP, the primary development selection metric.",
+      "LGBM-02 is marginally higher on validation AP/AUC; the observed differences are small.",
+      "XGB-07 tuning adds only a small AP improvement and slightly lowers validation AUC; retain the baseline.",
+      "XGBoost sigmoid worsens probability metrics; isotonic gains are too small to justify an extra calibration layer.",
+      "Prefer the fixed baseline without an additional tuned configuration or calibration ensemble; no superiority claim is made."
+    ]
+  },
+  "source_artifacts_sha256": {
+    "reports/tree_model_experiments.json": "0cc2b1910fdf94d78b8affab69ddc742514a792b667005b0c8d2ec73f300040a",
+    "reports/boosting_tuning_results.json": "02f9789b1544594fdd2cc72fccc0563d9bf91cdeb423a8331313cd41c1cd9edd",
+    "reports/logistic_imbalance_experiments.json": "6fbd296faaf319bcac0eca26bca4064b94a2d6acfa94ccfc154c975411a6d427",
+    "reports/threshold_scenarios.csv": "bee0fc3269871b72763fdfd02dd8b0117dc66e0da9c8b15864250f61c57fc405",
+    "reports/calibration_results.json": "6992978cd41dc3a316df1e2bf13eeca1d24a87c5f75f70d1325e7610b8fb343d"
+  },
+  "validation_reproduction": {
+    "status": "PASS",
+    "fit_rows": 104998,
+    "validation_rows": 22486,
+    "roc_auc": 0.863666393084869,
+    "average_precision": 0.38128449036768636,
+    "threshold_checks": [
+      {
+        "threshold": 0.5,
+        "precision": 0.5688259109311741,
+        "recall": 0.19012178619756429,
+        "f1": 0.28498985801217036,
+        "specificity": 0.9898610053313024,
+        "false_positive_rate": 0.010138994668697639,
+        "false_negative_rate": 0.8098782138024357,
+        "predicted_positive_rate": 0.02196922529573957,
+        "tp": 281,
+        "fp": 213,
+        "tn": 20795,
+        "fn": 1197,
+        "balanced_accuracy": 0.5899913957644334
+      },
+      {
+        "threshold": 0.19,
+        "precision": 0.37230306071249375,
+        "recall": 0.5020297699594046,
+        "f1": 0.42754249495822527,
+        "specificity": 0.940451256664128,
+        "false_positive_rate": 0.05954874333587205,
+        "false_negative_rate": 0.4979702300405954,
+        "predicted_positive_rate": 0.08863292715467402,
+        "tp": 742,
+        "fp": 1251,
+        "tn": 19757,
+        "fn": 736,
+        "balanced_accuracy": 0.7212405133117663
+      }
+    ],
+    "number_of_transformed_features": 13,
+    "tolerance": {
+      "rtol": 1e-06,
+      "atol": 1e-08
+    }
+  }
+}
