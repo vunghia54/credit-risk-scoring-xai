@@ -1,0 +1,40 @@
+model,feature,importance,rank
+Random Forest,RevolvingUtilizationOfUnsecuredLines,0.18893584427609422,1
+Random Forest,DebtRatio,0.1720965602855024,2
+Random Forest,MonthlyIncome,0.13938615462109233,3
+Random Forest,age,0.13002882766373158,4
+Random Forest,NumberOfOpenCreditLinesAndLoans,0.09322448240666602,5
+Random Forest,NumberOfTimes90DaysLate,0.08728520023373164,6
+Random Forest,NumberOfTime30-59DaysPastDueNotWorse,0.05121593834938694,7
+Random Forest,NumberOfTime60-89DaysPastDueNotWorse,0.04793107343844721,8
+Random Forest,NumberOfDependents,0.041083403560973175,9
+Random Forest,NumberRealEstateLoansOrLines,0.03443792144708659,10
+Random Forest,has_special_delinquency_value,0.006246411807839103,11
+Random Forest,MonthlyIncome_missing,0.005306975426911206,12
+Random Forest,NumberOfDependents_missing,0.0028212064825375843,13
+XGBoost,NumberOfTimes90DaysLate,0.2897501289844513,1
+XGBoost,RevolvingUtilizationOfUnsecuredLines,0.27740418910980225,2
+XGBoost,NumberOfTime60-89DaysPastDueNotWorse,0.13905194401741028,3
+XGBoost,NumberOfTime30-59DaysPastDueNotWorse,0.1330748051404953,4
+XGBoost,has_special_delinquency_value,0.06309860199689865,5
+XGBoost,NumberRealEstateLoansOrLines,0.02363676019012928,6
+XGBoost,age,0.018086789175868034,7
+XGBoost,NumberOfOpenCreditLinesAndLoans,0.01371722761541605,8
+XGBoost,MonthlyIncome,0.01244566310197115,9
+XGBoost,DebtRatio,0.011742730624973774,10
+XGBoost,NumberOfDependents,0.008004923351109028,11
+XGBoost,MonthlyIncome_missing,0.005828358232975006,12
+XGBoost,NumberOfDependents_missing,0.004157974850386381,13
+LightGBM,DebtRatio,1678.0,1
+LightGBM,age,1528.0,2
+LightGBM,RevolvingUtilizationOfUnsecuredLines,1508.0,3
+LightGBM,MonthlyIncome,1273.0,4
+LightGBM,NumberOfOpenCreditLinesAndLoans,969.0,5
+LightGBM,NumberOfTime30-59DaysPastDueNotWorse,455.0,6
+LightGBM,NumberRealEstateLoansOrLines,437.0,7
+LightGBM,NumberOfTimes90DaysLate,403.0,8
+LightGBM,NumberOfDependents,328.0,9
+LightGBM,NumberOfTime60-89DaysPastDueNotWorse,326.0,10
+LightGBM,has_special_delinquency_value,59.0,11
+LightGBM,MonthlyIncome_missing,18.0,12
+LightGBM,NumberOfDependents_missing,18.0,13

@@ -1,0 +1,795 @@
+{
+  "random_state": 42,
+  "threshold": 0.5,
+  "cv_design": {
+    "splitter": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "shuffle": true,
+    "std_ddof": 0,
+    "shared_folds": true,
+    "groups": "raw training feature-group metadata"
+  },
+  "tree_experiments": {
+    "random_forest": {
+      "configuration": {
+        "n_estimators": 300,
+        "random_state": 42,
+        "n_jobs": -1,
+        "class_weight": null
+      },
+      "other_parameters": "library defaults, untuned",
+      "preprocessor": "build_tree_preprocessor",
+      "number_of_features": 13,
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8476534999169868,
+            "average_precision": 0.3594628799012336,
+            "runtime_seconds": 3.9287884999939706
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.843375802387286,
+            "average_precision": 0.3755315219215121,
+            "runtime_seconds": 3.820197499997448
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8447958125663217,
+            "average_precision": 0.3664858266473236,
+            "runtime_seconds": 3.9179732000047807
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8518134968689849,
+            "average_precision": 0.3721850710168819,
+            "runtime_seconds": 3.7794950000097742
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8482456581516971,
+            "average_precision": 0.3658273289445231,
+            "runtime_seconds": 3.987713500013342
+          }
+        ],
+        "std_ddof": 0,
+        "summary": {
+          "roc_auc": {
+            "mean": 0.8471768539782554,
+            "std": 0.0029320757974780056
+          },
+          "average_precision": {
+            "mean": 0.3678985256862949,
+            "std": 0.005551266463193364
+          }
+        }
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8457142462385616,
+        "average_precision": 0.3389146550410027,
+        "precision": 0.5133079847908745,
+        "recall": 0.18267929634641408,
+        "f1": 0.2694610778443114,
+        "accuracy": 0.9348928222004803,
+        "confusion_matrix": [
+          [
+            20752,
+            256
+          ],
+          [
+            1208,
+            270
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.02339233300720448,
+        "gini": 0.6914284924771232
+      },
+      "full_train_fit_seconds": 5.20070579998719,
+      "runtime_seconds": 24.998822499997914,
+      "fitted_estimators_or_rounds": 300,
+      "feature_importances": [
+        {
+          "model": "Random Forest",
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "importance": 0.18893584427609422,
+          "rank": 1
+        },
+        {
+          "model": "Random Forest",
+          "feature": "DebtRatio",
+          "importance": 0.1720965602855024,
+          "rank": 2
+        },
+        {
+          "model": "Random Forest",
+          "feature": "MonthlyIncome",
+          "importance": 0.13938615462109233,
+          "rank": 3
+        },
+        {
+          "model": "Random Forest",
+          "feature": "age",
+          "importance": 0.13002882766373158,
+          "rank": 4
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "importance": 0.09322448240666602,
+          "rank": 5
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberOfTimes90DaysLate",
+          "importance": 0.08728520023373164,
+          "rank": 6
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "importance": 0.05121593834938694,
+          "rank": 7
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+          "importance": 0.04793107343844721,
+          "rank": 8
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberOfDependents",
+          "importance": 0.041083403560973175,
+          "rank": 9
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberRealEstateLoansOrLines",
+          "importance": 0.03443792144708659,
+          "rank": 10
+        },
+        {
+          "model": "Random Forest",
+          "feature": "has_special_delinquency_value",
+          "importance": 0.006246411807839103,
+          "rank": 11
+        },
+        {
+          "model": "Random Forest",
+          "feature": "MonthlyIncome_missing",
+          "importance": 0.005306975426911206,
+          "rank": 12
+        },
+        {
+          "model": "Random Forest",
+          "feature": "NumberOfDependents_missing",
+          "importance": 0.0028212064825375843,
+          "rank": 13
+        }
+      ]
+    },
+    "xgboost": {
+      "configuration": {
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "objective": "binary:logistic",
+        "eval_metric": "logloss",
+        "random_state": 42,
+        "n_jobs": -1,
+        "tree_method": "hist"
+      },
+      "other_parameters": "library defaults, untuned",
+      "preprocessor": "build_tree_preprocessor",
+      "number_of_features": 13,
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8636773229664227,
+            "average_precision": 0.39193175101662436,
+            "runtime_seconds": 2.2523779000039212
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8593748079137302,
+            "average_precision": 0.3972925542386363,
+            "runtime_seconds": 0.3591605999972671
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8624827908780915,
+            "average_precision": 0.3967962206927395,
+            "runtime_seconds": 0.34995669999625534
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8647911706773195,
+            "average_precision": 0.405211124715374,
+            "runtime_seconds": 0.40405250000185333
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8674610638025129,
+            "average_precision": 0.4031675663890887,
+            "runtime_seconds": 0.37695169998914935
+          }
+        ],
+        "std_ddof": 0,
+        "summary": {
+          "roc_auc": {
+            "mean": 0.8635574312476153,
+            "std": 0.0026617296634057932
+          },
+          "average_precision": {
+            "mean": 0.39887984341049254,
+            "std": 0.0047666896219804465
+          }
+        }
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.863666393084869,
+        "average_precision": 0.38128449036768636,
+        "precision": 0.5688259109311741,
+        "recall": 0.19012178619756429,
+        "f1": 0.28498985801217036,
+        "accuracy": 0.9372943164635773,
+        "confusion_matrix": [
+          [
+            20795,
+            213
+          ],
+          [
+            1197,
+            281
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.02196922529573957,
+        "gini": 0.7273327861697381
+      },
+      "full_train_fit_seconds": 0.41063600000052247,
+      "runtime_seconds": 4.363916900008917,
+      "fitted_estimators_or_rounds": 300,
+      "feature_importances": [
+        {
+          "model": "XGBoost",
+          "feature": "NumberOfTimes90DaysLate",
+          "importance": 0.2897501289844513,
+          "rank": 1
+        },
+        {
+          "model": "XGBoost",
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "importance": 0.27740418910980225,
+          "rank": 2
+        },
+        {
+          "model": "XGBoost",
+          "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+          "importance": 0.13905194401741028,
+          "rank": 3
+        },
+        {
+          "model": "XGBoost",
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "importance": 0.1330748051404953,
+          "rank": 4
+        },
+        {
+          "model": "XGBoost",
+          "feature": "has_special_delinquency_value",
+          "importance": 0.06309860199689865,
+          "rank": 5
+        },
+        {
+          "model": "XGBoost",
+          "feature": "NumberRealEstateLoansOrLines",
+          "importance": 0.02363676019012928,
+          "rank": 6
+        },
+        {
+          "model": "XGBoost",
+          "feature": "age",
+          "importance": 0.018086789175868034,
+          "rank": 7
+        },
+        {
+          "model": "XGBoost",
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "importance": 0.01371722761541605,
+          "rank": 8
+        },
+        {
+          "model": "XGBoost",
+          "feature": "MonthlyIncome",
+          "importance": 0.01244566310197115,
+          "rank": 9
+        },
+        {
+          "model": "XGBoost",
+          "feature": "DebtRatio",
+          "importance": 0.011742730624973774,
+          "rank": 10
+        },
+        {
+          "model": "XGBoost",
+          "feature": "NumberOfDependents",
+          "importance": 0.008004923351109028,
+          "rank": 11
+        },
+        {
+          "model": "XGBoost",
+          "feature": "MonthlyIncome_missing",
+          "importance": 0.005828358232975006,
+          "rank": 12
+        },
+        {
+          "model": "XGBoost",
+          "feature": "NumberOfDependents_missing",
+          "importance": 0.004157974850386381,
+          "rank": 13
+        }
+      ]
+    },
+    "lightgbm": {
+      "configuration": {
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "random_state": 42,
+        "n_jobs": -1,
+        "verbosity": -1
+      },
+      "other_parameters": "library defaults, untuned",
+      "preprocessor": "build_tree_preprocessor",
+      "number_of_features": 13,
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8624185668105755,
+            "average_precision": 0.3922671341562917,
+            "runtime_seconds": 0.7167065000103321
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8581982094558585,
+            "average_precision": 0.3977515156497006,
+            "runtime_seconds": 0.5927327000099467
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8608501027810693,
+            "average_precision": 0.3897552405215718,
+            "runtime_seconds": 0.6071319000038784
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8645610106489373,
+            "average_precision": 0.3985502849090445,
+            "runtime_seconds": 0.58393320000323
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8650890763023305,
+            "average_precision": 0.39925645437424717,
+            "runtime_seconds": 0.6151313000009395
+          }
+        ],
+        "std_ddof": 0,
+        "summary": {
+          "roc_auc": {
+            "mean": 0.8622233931997542,
+            "std": 0.002522011834534156
+          },
+          "average_precision": {
+            "mean": 0.39551612592217117,
+            "std": 0.00379306981255471
+          }
+        }
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8608414173297729,
+        "average_precision": 0.3763047179361759,
+        "precision": 0.5604838709677419,
+        "recall": 0.1880920162381597,
+        "f1": 0.281661600810537,
+        "accuracy": 0.9369385395357112,
+        "confusion_matrix": [
+          [
+            20790,
+            218
+          ],
+          [
+            1200,
+            278
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.022058169527706128,
+        "gini": 0.7216828346595459
+      },
+      "full_train_fit_seconds": 0.6194324999960372,
+      "runtime_seconds": 3.968987800006289,
+      "fitted_estimators_or_rounds": 300,
+      "feature_importances": [
+        {
+          "model": "LightGBM",
+          "feature": "DebtRatio",
+          "importance": 1678.0,
+          "rank": 1
+        },
+        {
+          "model": "LightGBM",
+          "feature": "age",
+          "importance": 1528.0,
+          "rank": 2
+        },
+        {
+          "model": "LightGBM",
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "importance": 1508.0,
+          "rank": 3
+        },
+        {
+          "model": "LightGBM",
+          "feature": "MonthlyIncome",
+          "importance": 1273.0,
+          "rank": 4
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "importance": 969.0,
+          "rank": 5
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "importance": 455.0,
+          "rank": 6
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberRealEstateLoansOrLines",
+          "importance": 437.0,
+          "rank": 7
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberOfTimes90DaysLate",
+          "importance": 403.0,
+          "rank": 8
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberOfDependents",
+          "importance": 328.0,
+          "rank": 9
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+          "importance": 326.0,
+          "rank": 10
+        },
+        {
+          "model": "LightGBM",
+          "feature": "has_special_delinquency_value",
+          "importance": 59.0,
+          "rank": 11
+        },
+        {
+          "model": "LightGBM",
+          "feature": "MonthlyIncome_missing",
+          "importance": 18.0,
+          "rank": 12
+        },
+        {
+          "model": "LightGBM",
+          "feature": "NumberOfDependents_missing",
+          "importance": 18.0,
+          "rank": 13
+        }
+      ]
+    }
+  },
+  "logistic_references": {
+    "logistic_baseline": {
+      "configuration": {
+        "class_weight": null,
+        "C": 1.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "regularization": "L2",
+        "random_state": 42,
+        "preprocessor": "build_linear_preprocessor",
+        "number_of_features": 13
+      },
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8120018485619629,
+            "average_precision": 0.3350831580432639,
+            "n_iter": [
+              29
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8121981669347378,
+            "average_precision": 0.3516857152071473,
+            "n_iter": [
+              26
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8107086441243982,
+            "average_precision": 0.3568103648584103,
+            "n_iter": [
+              27
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8219941147297934,
+            "average_precision": 0.3650714492142297,
+            "n_iter": [
+              25
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8131193672455124,
+            "average_precision": 0.35447847944507654,
+            "n_iter": [
+              23
+            ],
+            "convergence_warning": false
+          }
+        ],
+        "summary": {
+          "roc_auc": {
+            "mean": 0.8140044283192809,
+            "std": 0.004068255679663678
+          },
+          "average_precision": {
+            "mean": 0.3526258333536255,
+            "std": 0.009843426586088161
+          }
+        },
+        "std_ddof": 0
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8127873607270689,
+        "average_precision": 0.33781063042125814,
+        "precision": 0.55,
+        "recall": 0.16373477672530445,
+        "f1": 0.2523461939520334,
+        "accuracy": 0.9362269856799786,
+        "confusion_matrix": [
+          [
+            20810,
+            198
+          ],
+          [
+            1236,
+            242
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.019567731032642532,
+        "gini": 0.6255747214541378
+      },
+      "convergence": {
+        "warning": false,
+        "n_iter": [
+          26
+        ],
+        "converged": true
+      }
+    },
+    "logistic_balanced": {
+      "configuration": {
+        "class_weight": "balanced",
+        "C": 1.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "regularization": "L2",
+        "random_state": 42,
+        "preprocessor": "build_linear_preprocessor",
+        "number_of_features": 13
+      },
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8183422700259916,
+            "average_precision": 0.3436809682619624,
+            "n_iter": [
+              25
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8185354048350564,
+            "average_precision": 0.3557586725804266,
+            "n_iter": [
+              22
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.816045514810005,
+            "average_precision": 0.3602382624127072,
+            "n_iter": [
+              22
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8283124423018042,
+            "average_precision": 0.36825183716399323,
+            "n_iter": [
+              20
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8173781527202769,
+            "average_precision": 0.35669840132179303,
+            "n_iter": [
+              25
+            ],
+            "convergence_warning": false
+          }
+        ],
+        "summary": {
+          "roc_auc": {
+            "mean": 0.819722756938627,
+            "std": 0.0043844617089309834
+          },
+          "average_precision": {
+            "mean": 0.3569256283481765,
+            "std": 0.007950987225115254
+          }
+        },
+        "std_ddof": 0
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8180493873330812,
+        "average_precision": 0.3434052208526683,
+        "precision": 0.24952224952224952,
+        "recall": 0.618403247631935,
+        "f1": 0.3555728457498541,
+        "accuracy": 0.8526638797473984,
+        "confusion_matrix": [
+          [
+            18259,
+            2749
+          ],
+          [
+            564,
+            914
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.16290136084674908,
+        "gini": 0.6360987746661624
+      },
+      "convergence": {
+        "warning": false,
+        "n_iter": [
+          21
+        ],
+        "converged": true
+      }
+    }
+  },
+  "logistic_curve_reproduction": "PASS",
+  "runtime_seconds": 46.313362400003825,
+  "notes": [
+    "Untuned baselines; each fold fits its own tree preprocessing without StandardScaler.",
+    "Same raw split, preprocessing policy and 0.5 threshold for the three tree models.",
+    "Logistic metrics/CV reused from STEP 8/9. Two train-only Logistic fits regenerate validated curves; Logistic CV is not rerun here.",
+    "No test evaluation, imbalance modification, early stopping, tuning, threshold selection, calibration or serialization.",
+    "Probabilities are model scores, not calibrated, regulatory or production PD estimates.",
+    "Native importances are audit only: RF impurity, XGBoost gain, LightGBM split counts; not causal, comparable across algorithms or a substitute for SHAP.",
+    "CV standard deviation is fold variability (ddof=0), not a confidence interval. No final model is selected."
+  ]
+}
