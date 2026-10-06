@@ -1,0 +1,442 @@
+{
+  "random_state": 42,
+  "threshold": 0.5,
+  "cv_design": {
+    "splitter": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "shuffle": true,
+    "source": "training partition raw feature-group metadata",
+    "shared_folds": true
+  },
+  "baseline_reproduction": "PASS",
+  "experiments": {
+    "baseline": {
+      "configuration": {
+        "class_weight": null,
+        "C": 1.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "regularization": "L2",
+        "random_state": 42,
+        "preprocessor": "build_linear_preprocessor",
+        "number_of_features": 13
+      },
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8120018485619629,
+            "average_precision": 0.3350831580432639,
+            "n_iter": [
+              29
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8121981669347378,
+            "average_precision": 0.3516857152071473,
+            "n_iter": [
+              26
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8107086441243982,
+            "average_precision": 0.3568103648584103,
+            "n_iter": [
+              27
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8219941147297934,
+            "average_precision": 0.3650714492142297,
+            "n_iter": [
+              25
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8131193672455124,
+            "average_precision": 0.35447847944507654,
+            "n_iter": [
+              23
+            ],
+            "convergence_warning": false
+          }
+        ],
+        "summary": {
+          "roc_auc": {
+            "mean": 0.8140044283192809,
+            "std": 0.004068255679663678
+          },
+          "average_precision": {
+            "mean": 0.3526258333536255,
+            "std": 0.009843426586088161
+          }
+        },
+        "std_ddof": 0
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8127873607270689,
+        "average_precision": 0.33781063042125814,
+        "precision": 0.55,
+        "recall": 0.16373477672530445,
+        "f1": 0.2523461939520334,
+        "accuracy": 0.9362269856799786,
+        "confusion_matrix": [
+          [
+            20810,
+            198
+          ],
+          [
+            1236,
+            242
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.019567731032642532,
+        "gini": 0.6255747214541378
+      },
+      "convergence": {
+        "warning": false,
+        "n_iter": [
+          26
+        ],
+        "converged": true
+      }
+    },
+    "balanced": {
+      "configuration": {
+        "class_weight": "balanced",
+        "C": 1.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "regularization": "L2",
+        "random_state": 42,
+        "preprocessor": "build_linear_preprocessor",
+        "number_of_features": 13
+      },
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8183422700259916,
+            "average_precision": 0.3436809682619624,
+            "n_iter": [
+              25
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8185354048350564,
+            "average_precision": 0.3557586725804266,
+            "n_iter": [
+              22
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.816045514810005,
+            "average_precision": 0.3602382624127072,
+            "n_iter": [
+              22
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8283124423018042,
+            "average_precision": 0.36825183716399323,
+            "n_iter": [
+              20
+            ],
+            "convergence_warning": false
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8173781527202769,
+            "average_precision": 0.35669840132179303,
+            "n_iter": [
+              25
+            ],
+            "convergence_warning": false
+          }
+        ],
+        "summary": {
+          "roc_auc": {
+            "mean": 0.819722756938627,
+            "std": 0.0043844617089309834
+          },
+          "average_precision": {
+            "mean": 0.3569256283481765,
+            "std": 0.007950987225115254
+          }
+        },
+        "std_ddof": 0
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8180493873330812,
+        "average_precision": 0.3434052208526683,
+        "precision": 0.24952224952224952,
+        "recall": 0.618403247631935,
+        "f1": 0.3555728457498541,
+        "accuracy": 0.8526638797473984,
+        "confusion_matrix": [
+          [
+            18259,
+            2749
+          ],
+          [
+            564,
+            914
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.16290136084674908,
+        "gini": 0.6360987746661624
+      },
+      "convergence": {
+        "warning": false,
+        "n_iter": [
+          21
+        ],
+        "converged": true
+      }
+    },
+    "smote": {
+      "configuration": {
+        "class_weight": null,
+        "C": 1.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "regularization": "L2",
+        "random_state": 42,
+        "preprocessor": "build_linear_preprocessor",
+        "number_of_features": 13,
+        "smote": {
+          "random_state": 42,
+          "sampling_strategy": "auto",
+          "k_neighbors": 5
+        }
+      },
+      "cv": {
+        "folds": [
+          {
+            "fold": 1,
+            "fitting_rows": 83998,
+            "evaluation_rows": 21000,
+            "group_overlap": 0,
+            "roc_auc": 0.8147041881454854,
+            "average_precision": 0.3418553386274162,
+            "n_iter": [
+              33
+            ],
+            "convergence_warning": false,
+            "smote": {
+              "input_rows": 83998,
+              "before": {
+                "0": 78349,
+                "1": 5649
+              },
+              "after": {
+                "0": 78349,
+                "1": 78349
+              }
+            }
+          },
+          {
+            "fold": 2,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8163661406919748,
+            "average_precision": 0.35475419076140047,
+            "n_iter": [
+              31
+            ],
+            "convergence_warning": false,
+            "smote": {
+              "input_rows": 83999,
+              "before": {
+                "0": 78350,
+                "1": 5649
+              },
+              "after": {
+                "0": 78350,
+                "1": 78350
+              }
+            }
+          },
+          {
+            "fold": 3,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8143129237739491,
+            "average_precision": 0.3581845295814739,
+            "n_iter": [
+              29
+            ],
+            "convergence_warning": false,
+            "smote": {
+              "input_rows": 83999,
+              "before": {
+                "0": 78350,
+                "1": 5649
+              },
+              "after": {
+                "0": 78350,
+                "1": 78350
+              }
+            }
+          },
+          {
+            "fold": 4,
+            "fitting_rows": 83999,
+            "evaluation_rows": 20999,
+            "group_overlap": 0,
+            "roc_auc": 0.8249490795117476,
+            "average_precision": 0.3666902923044928,
+            "n_iter": [
+              31
+            ],
+            "convergence_warning": false,
+            "smote": {
+              "input_rows": 83999,
+              "before": {
+                "0": 78350,
+                "1": 5649
+              },
+              "after": {
+                "0": 78350,
+                "1": 78350
+              }
+            }
+          },
+          {
+            "fold": 5,
+            "fitting_rows": 83997,
+            "evaluation_rows": 21001,
+            "group_overlap": 0,
+            "roc_auc": 0.8171568204517664,
+            "average_precision": 0.35622943277984126,
+            "n_iter": [
+              33
+            ],
+            "convergence_warning": false,
+            "smote": {
+              "input_rows": 83997,
+              "before": {
+                "0": 78349,
+                "1": 5648
+              },
+              "after": {
+                "0": 78349,
+                "1": 78349
+              }
+            }
+          }
+        ],
+        "summary": {
+          "roc_auc": {
+            "mean": 0.8174978305149846,
+            "std": 0.003869526843639551
+          },
+          "average_precision": {
+            "mean": 0.3555427568109249,
+            "std": 0.007996065129581736
+          }
+        },
+        "std_ddof": 0
+      },
+      "validation": {
+        "rows": 22486,
+        "roc_auc": 0.8179100950781556,
+        "average_precision": 0.34292096148923695,
+        "precision": 0.23716814159292035,
+        "recall": 0.6346414073071719,
+        "f1": 0.34529725750046014,
+        "accuracy": 0.8418126834474784,
+        "confusion_matrix": [
+          [
+            17991,
+            3017
+          ],
+          [
+            540,
+            938
+          ]
+        ],
+        "positive_prevalence": 0.0657297874232856,
+        "predicted_positive_rate": 0.1758872187138664,
+        "gini": 0.6358201901563112
+      },
+      "convergence": {
+        "warning": false,
+        "n_iter": [
+          29
+        ],
+        "converged": true
+      },
+      "smote_audit": {
+        "before_rows": 104998,
+        "after_rows": 195874,
+        "before_class_counts": {
+          "0": 97937,
+          "1": 7061
+        },
+        "after_class_counts": {
+          "0": 97937,
+          "1": 97937
+        }
+      }
+    }
+  },
+  "notes": [
+    "All preprocessing and SMOTE fit only inside each fitting fold or full training partition.",
+    "Validation is unchanged and never resampled. Test is not evaluated.",
+    "SMOTE interpolates transformed numeric space; fractional count/binary-like values may not represent real customer profiles.",
+    "SMOTE is a benchmark, not a preferred method by assumption. Synthetic samples are not exported.",
+    "Threshold remains 0.5. No final strategy selection, tuning, calibration or calibrated PD claim.",
+    "Average Precision is the PR summary, not trapezoidal PR area; CV std uses ddof=0 and is not a confidence interval."
+  ]
+}
