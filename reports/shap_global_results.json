@@ -1,0 +1,462 @@
+{
+  "final_model": "XGBoost Baseline / XGB-01",
+  "frozen_specification": {
+    "final_model": "XGBoost Baseline / XGB-01",
+    "preprocessing": {
+      "builder": "build_tree_preprocessor",
+      "module": "src.preprocessing",
+      "transformed_features": [
+        "RevolvingUtilizationOfUnsecuredLines",
+        "age",
+        "NumberOfTime30-59DaysPastDueNotWorse",
+        "DebtRatio",
+        "MonthlyIncome",
+        "NumberOfOpenCreditLinesAndLoans",
+        "NumberOfTimes90DaysLate",
+        "NumberRealEstateLoansOrLines",
+        "NumberOfTime60-89DaysPastDueNotWorse",
+        "NumberOfDependents",
+        "MonthlyIncome_missing",
+        "NumberOfDependents_missing",
+        "has_special_delinquency_value"
+      ],
+      "fit_partition": "training only",
+      "scaling": "none"
+    },
+    "model_parameters": {
+      "n_estimators": 300,
+      "learning_rate": 0.05,
+      "max_depth": 3,
+      "min_child_weight": 1,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 0,
+      "reg_lambda": 1,
+      "objective": "binary:logistic",
+      "eval_metric": "logloss",
+      "random_state": 42,
+      "n_jobs": -1,
+      "tree_method": "hist"
+    },
+    "calibration_method": "none",
+    "default_audit_threshold": 0.5,
+    "development_operating_threshold": 0.19,
+    "development_threshold_selection_rule": {
+      "source": "STEP 12 validation RECALL_AT_LEAST_50 scenario",
+      "rule": "Among thresholds with recall >= 0.50, choose highest precision; ties: higher F1, then higher threshold.",
+      "historical_grid": {
+        "start": 0.05,
+        "stop": 0.95,
+        "step": 0.01
+      },
+      "status": "already selected and frozen; no search in this module",
+      "positive_rule": "score >= threshold"
+    },
+    "final_test_metrics_to_report": {
+      "threshold_independent": [
+        "roc_auc",
+        "average_precision",
+        "brier_score",
+        "log_loss",
+        "gini"
+      ],
+      "calibration_audit": [
+        "ece",
+        "mean_predicted_probability",
+        "observed_test_prevalence",
+        "reliability_bins"
+      ],
+      "classification_thresholds": [
+        0.5,
+        0.19
+      ],
+      "classification_metrics": [
+        "precision",
+        "recall",
+        "f1",
+        "accuracy",
+        "specificity",
+        "false_positive_rate",
+        "false_negative_rate",
+        "predicted_positive_rate",
+        "confusion_matrix"
+      ],
+      "confusion_matrix_order": [
+        [
+          "tn",
+          "fp"
+        ],
+        [
+          "fn",
+          "tp"
+        ]
+      ],
+      "gini_definition": "2 * ROC-AUC - 1",
+      "ece_definition": "sum(bin_count / total_count * abs(observed_positive_rate - mean_predicted_probability))",
+      "reliability_definition": {
+        "implementation": "src.calibration_analysis.reliability_bins",
+        "n_bins": 10,
+        "strategy": "quantile",
+        "duplicate_policy": "remove duplicate edges; do not split identical scores; omit empty bins"
+      }
+    },
+    "test_lock_policy": {
+      "step_14": "locked; no test evaluation, labels, prevalence or distributions inspected by this module",
+      "step_15": "evaluate only this frozen model as the final internal holdout evaluation",
+      "fit_partition": "training only; do not combine training and validation for this frozen evaluation",
+      "forbidden_after_test": [
+        "model reselection",
+        "hyperparameter changes",
+        "calibration changes",
+        "preprocessing changes",
+        "threshold changes or searches",
+        "test-driven feature selection",
+        "adding SMOTE or class weighting",
+        "switching to LightGBM based on test results"
+      ],
+      "performance_shortfall": "Report honestly even if test performance is lower than validation; do not retune."
+    },
+    "random_state": 42,
+    "limitations": [
+      "Selected from development evidence, not objectively or production best.",
+      "Repeated development use of validation can cause selection optimism.",
+      "No business cost matrix supports a bank-optimal threshold claim.",
+      "Calibration has only been audited internally on validation; scores are not regulatory or production-validated PD.",
+      "Development operating threshold 0.19 is neither a production threshold nor a regulatory cutoff.",
+      "STEP 14 contains a future test evaluation policy, not observed test metrics."
+    ]
+  },
+  "calibration": "none",
+  "random_state": 42,
+  "fit_partition": "training only",
+  "train_rows": 104998,
+  "shap_dataset": "validation",
+  "validation_rows": 22486,
+  "transformed_feature_count": 13,
+  "transformed_features": [
+    "RevolvingUtilizationOfUnsecuredLines",
+    "age",
+    "NumberOfTime30-59DaysPastDueNotWorse",
+    "DebtRatio",
+    "MonthlyIncome",
+    "NumberOfOpenCreditLinesAndLoans",
+    "NumberOfTimes90DaysLate",
+    "NumberRealEstateLoansOrLines",
+    "NumberOfTime60-89DaysPastDueNotWorse",
+    "NumberOfDependents",
+    "MonthlyIncome_missing",
+    "NumberOfDependents_missing",
+    "has_special_delinquency_value"
+  ],
+  "shap_output_shape": [
+    22486,
+    13
+  ],
+  "shap_output_space": "raw margin / log-odds",
+  "explainer": {
+    "class": "shap.TreeExplainer",
+    "shap_version": "0.52.0",
+    "model_output": "raw",
+    "feature_perturbation": "tree_path_dependent",
+    "approximate": false,
+    "background": "training path counts recorded in the fitted trees; no external background data"
+  },
+  "expected_value": -2.653778314590454,
+  "additivity_check": {
+    "status": "PASS",
+    "rows": 512,
+    "max_absolute_error": 5.427587893791497e-06,
+    "mean_absolute_error": 1.1277222107253237e-06,
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "criterion": "abs(base + sum(SHAP) - margin) <= atol + rtol * abs(margin)",
+    "sample_selection": "uniform positions without replacement, sorted, seed 42",
+    "positions_sha256": "25d839cf4fb88909c5570dd3b6adf6062680b2aa531cf7f12fd67ff2e93912f1",
+    "library_full_validation_additivity_check": true
+  },
+  "global_importance": [
+    {
+      "rank": 1,
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "mean_absolute_shap": 0.7809633840289427,
+      "relative_importance": 0.34348698745625855
+    },
+    {
+      "rank": 2,
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "mean_absolute_shap": 0.3457020371801105,
+      "relative_importance": 0.1520482953962499
+    },
+    {
+      "rank": 3,
+      "feature": "NumberOfTimes90DaysLate",
+      "mean_absolute_shap": 0.28167521748017516,
+      "relative_importance": 0.12388771851788402
+    },
+    {
+      "rank": 4,
+      "feature": "age",
+      "mean_absolute_shap": 0.2161713133119843,
+      "relative_importance": 0.09507748340381178
+    },
+    {
+      "rank": 5,
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "mean_absolute_shap": 0.16924128326851046,
+      "relative_importance": 0.07443649693693905
+    },
+    {
+      "rank": 6,
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "mean_absolute_shap": 0.15729158608223703,
+      "relative_importance": 0.06918072493601324
+    },
+    {
+      "rank": 7,
+      "feature": "DebtRatio",
+      "mean_absolute_shap": 0.10239784862962395,
+      "relative_importance": 0.04503710323311138
+    },
+    {
+      "rank": 8,
+      "feature": "MonthlyIncome",
+      "mean_absolute_shap": 0.09098900110502621,
+      "relative_importance": 0.04001921027332232
+    },
+    {
+      "rank": 9,
+      "feature": "NumberRealEstateLoansOrLines",
+      "mean_absolute_shap": 0.0829450738654822,
+      "relative_importance": 0.03648129237431118
+    },
+    {
+      "rank": 10,
+      "feature": "NumberOfDependents",
+      "mean_absolute_shap": 0.027791517793380995,
+      "relative_importance": 0.012223396024584509
+    },
+    {
+      "rank": 11,
+      "feature": "has_special_delinquency_value",
+      "mean_absolute_shap": 0.014992470332200771,
+      "relative_importance": 0.006594058792318648
+    },
+    {
+      "rank": 12,
+      "feature": "MonthlyIncome_missing",
+      "mean_absolute_shap": 0.002096155385355391,
+      "relative_importance": 0.000921940917180379
+    },
+    {
+      "rank": 13,
+      "feature": "NumberOfDependents_missing",
+      "mean_absolute_shap": 0.0013762113305823948,
+      "relative_importance": 0.0006052917380149505
+    }
+  ],
+  "ranking_tie_policy": "stable sort descending; ties preserve approved feature schema order",
+  "native_importance_comparison": [
+    {
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "shap_rank": 1,
+      "mean_absolute_shap": 0.7809633840289427,
+      "xgboost_native_importance": 0.2774041891098022,
+      "native_rank": 2
+    },
+    {
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "shap_rank": 2,
+      "mean_absolute_shap": 0.3457020371801105,
+      "xgboost_native_importance": 0.1330748051404953,
+      "native_rank": 4
+    },
+    {
+      "feature": "NumberOfTimes90DaysLate",
+      "shap_rank": 3,
+      "mean_absolute_shap": 0.28167521748017516,
+      "xgboost_native_importance": 0.2897501289844513,
+      "native_rank": 1
+    },
+    {
+      "feature": "age",
+      "shap_rank": 4,
+      "mean_absolute_shap": 0.2161713133119843,
+      "xgboost_native_importance": 0.018086789175868,
+      "native_rank": 7
+    },
+    {
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "shap_rank": 5,
+      "mean_absolute_shap": 0.16924128326851046,
+      "xgboost_native_importance": 0.1390519440174102,
+      "native_rank": 3
+    },
+    {
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "shap_rank": 6,
+      "mean_absolute_shap": 0.15729158608223703,
+      "xgboost_native_importance": 0.013717227615416,
+      "native_rank": 8
+    },
+    {
+      "feature": "DebtRatio",
+      "shap_rank": 7,
+      "mean_absolute_shap": 0.10239784862962395,
+      "xgboost_native_importance": 0.0117427306249737,
+      "native_rank": 10
+    },
+    {
+      "feature": "MonthlyIncome",
+      "shap_rank": 8,
+      "mean_absolute_shap": 0.09098900110502621,
+      "xgboost_native_importance": 0.0124456631019711,
+      "native_rank": 9
+    },
+    {
+      "feature": "NumberRealEstateLoansOrLines",
+      "shap_rank": 9,
+      "mean_absolute_shap": 0.0829450738654822,
+      "xgboost_native_importance": 0.0236367601901292,
+      "native_rank": 6
+    },
+    {
+      "feature": "NumberOfDependents",
+      "shap_rank": 10,
+      "mean_absolute_shap": 0.027791517793380995,
+      "xgboost_native_importance": 0.008004923351109,
+      "native_rank": 11
+    },
+    {
+      "feature": "has_special_delinquency_value",
+      "shap_rank": 11,
+      "mean_absolute_shap": 0.014992470332200771,
+      "xgboost_native_importance": 0.0630986019968986,
+      "native_rank": 5
+    },
+    {
+      "feature": "MonthlyIncome_missing",
+      "shap_rank": 12,
+      "mean_absolute_shap": 0.002096155385355391,
+      "xgboost_native_importance": 0.005828358232975,
+      "native_rank": 12
+    },
+    {
+      "feature": "NumberOfDependents_missing",
+      "shap_rank": 13,
+      "mean_absolute_shap": 0.0013762113305823948,
+      "xgboost_native_importance": 0.0041579748503863,
+      "native_rank": 13
+    }
+  ],
+  "native_importance_definition": "normalized XGBoost gain from the existing STEP 10 audit; reproduced by the frozen fit",
+  "feature_effect_patterns": [
+    {
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "group_definition": "low: value <= 0.0305622; high: value >= 0.564023 (validation quartiles)",
+      "low": {
+        "rows": 5622,
+        "mean_signed_shap": -1.0574150085449219,
+        "positive_shap_fraction": 0.0
+      },
+      "high": {
+        "rows": 5622,
+        "mean_signed_shap": 0.798957347869873,
+        "positive_shap_fraction": 1.0
+      },
+      "interpretation": "Descriptive association with model raw-margin output; no simple monotonic pattern is established by these group summaries."
+    },
+    {
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "group_definition": "tied quartiles; low: value = 0; high: value > 0",
+      "low": {
+        "rows": 18885,
+        "mean_signed_shap": -0.2742573916912079,
+        "positive_shap_fraction": 0.0
+      },
+      "high": {
+        "rows": 3601,
+        "mean_signed_shap": 0.7203845381736755,
+        "positive_shap_fraction": 1.0
+      },
+      "interpretation": "Descriptive association with model raw-margin output; no simple monotonic pattern is established by these group summaries."
+    },
+    {
+      "feature": "NumberOfTimes90DaysLate",
+      "group_definition": "tied quartiles; low: value = 0; high: value > 0",
+      "low": {
+        "rows": 21213,
+        "mean_signed_shap": -0.20880764722824097,
+        "positive_shap_fraction": 0.0
+      },
+      "high": {
+        "rows": 1273,
+        "mean_signed_shap": 1.495924711227417,
+        "positive_shap_fraction": 1.0
+      },
+      "interpretation": "Descriptive association with model raw-margin output; no simple monotonic pattern is established by these group summaries."
+    },
+    {
+      "feature": "age",
+      "group_definition": "low: value <= 41; high: value >= 63 (validation quartiles)",
+      "low": {
+        "rows": 5720,
+        "mean_signed_shap": 0.22418853640556335,
+        "positive_shap_fraction": 0.9972027972027973
+      },
+      "high": {
+        "rows": 5654,
+        "mean_signed_shap": -0.407877117395401,
+        "positive_shap_fraction": 0.0019455252918287938
+      },
+      "interpretation": "Descriptive association with model raw-margin output; no simple monotonic pattern is established by these group summaries."
+    },
+    {
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "group_definition": "tied quartiles; low: value = 0; high: value > 0",
+      "low": {
+        "rows": 21339,
+        "mean_signed_shap": -0.12313313782215118,
+        "positive_shap_fraction": 0.0
+      },
+      "high": {
+        "rows": 1147,
+        "mean_signed_shap": 1.0270458459854126,
+        "positive_shap_fraction": 1.0
+      },
+      "interpretation": "Descriptive association with model raw-margin output; no simple monotonic pattern is established by these group summaries."
+    }
+  ],
+  "plotting": {
+    "rows": 5000,
+    "population_rows": 22486,
+    "selection": "uniform validation positions without replacement, seed 42; independent of target and model score",
+    "global_importance_population": "full validation, no sampling",
+    "dependence_x_axis": "symlog, linthresh=1; all selected observations retained"
+  },
+  "test_not_used_statement": "TEST was not used for SHAP values, feature ranking, plot selection, effect patterns or any explainability decision. The analysis API receives TRAIN features/labels and VALIDATION features only, with no validation target. The existing splitter still performs its approved integrity checks on all partitions; its returned test partition is never accessed by this module.",
+  "interpretation_limitations": [
+    "SHAP explains model behavior, not causal relationships or credit policy rules.",
+    "Values are raw-margin / log-odds contributions, not direct probability changes or percentage-point PD effects.",
+    "Attributions depend on the tree-path-dependent reference distribution and feature dependence assumptions; correlated features can share attribution.",
+    "Importance is mean absolute contribution on validation, not statistical significance or model-selection evidence.",
+    "Inputs include training-median imputation and engineered missing/special-value indicators; they are not untouched raw columns.",
+    "Marginal low/high summaries and scatter plots do not establish a monotonic, causal or counterfactual response.",
+    "Native gain importance and SHAP summarize different quantities; neither is ground truth and their numerical units differ.",
+    "Internal validation explanations do not establish external generalization, fairness, production suitability or regulatory PD.",
+    "The consumed internal test remains excluded from explainability development. No frozen decision is revised."
+  ],
+  "no_model_changes": true,
+  "runtime_seconds": {
+    "shap_calculation": 0.500679000018863,
+    "fit_explain_and_aggregate": 2.7908256000082474,
+    "load_fit_explain_and_aggregate": 3.301873099990189,
+    "figure_export": 1.3301709000079427
+  },
+  "provenance": {
+    "freeze_commit": "b6efa63",
+    "prior_final_evaluation_commit": "025d063",
+    "raw_dataset_sha256": "1bd46da486a5708c58c7b01a034fae2a13b327f6f7b62ea7ba4fe3b5824b24ac",
+    "frozen_specification_sha256": "e43c9e92ca101aee2d0418a7122e95bf0e6850bfed1e029cfa162bb4eded10f2",
+    "native_importance_sha256": "bda6042efa84c06648f287f3d46595d19f34aa67050628312c24a701dc3ddcb1"
+  }
+}
