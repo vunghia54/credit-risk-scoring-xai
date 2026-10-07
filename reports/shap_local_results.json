@@ -1,0 +1,1338 @@
+{
+  "final_model": "XGBoost Baseline / XGB-01",
+  "frozen_specification": {
+    "final_model": "XGBoost Baseline / XGB-01",
+    "preprocessing": {
+      "builder": "build_tree_preprocessor",
+      "module": "src.preprocessing",
+      "transformed_features": [
+        "RevolvingUtilizationOfUnsecuredLines",
+        "age",
+        "NumberOfTime30-59DaysPastDueNotWorse",
+        "DebtRatio",
+        "MonthlyIncome",
+        "NumberOfOpenCreditLinesAndLoans",
+        "NumberOfTimes90DaysLate",
+        "NumberRealEstateLoansOrLines",
+        "NumberOfTime60-89DaysPastDueNotWorse",
+        "NumberOfDependents",
+        "MonthlyIncome_missing",
+        "NumberOfDependents_missing",
+        "has_special_delinquency_value"
+      ],
+      "fit_partition": "training only",
+      "scaling": "none"
+    },
+    "model_parameters": {
+      "n_estimators": 300,
+      "learning_rate": 0.05,
+      "max_depth": 3,
+      "min_child_weight": 1,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 0,
+      "reg_lambda": 1,
+      "objective": "binary:logistic",
+      "eval_metric": "logloss",
+      "random_state": 42,
+      "n_jobs": -1,
+      "tree_method": "hist"
+    },
+    "calibration_method": "none",
+    "default_audit_threshold": 0.5,
+    "development_operating_threshold": 0.19,
+    "development_threshold_selection_rule": {
+      "source": "STEP 12 validation RECALL_AT_LEAST_50 scenario",
+      "rule": "Among thresholds with recall >= 0.50, choose highest precision; ties: higher F1, then higher threshold.",
+      "historical_grid": {
+        "start": 0.05,
+        "stop": 0.95,
+        "step": 0.01
+      },
+      "status": "already selected and frozen; no search in this module",
+      "positive_rule": "score >= threshold"
+    },
+    "final_test_metrics_to_report": {
+      "threshold_independent": [
+        "roc_auc",
+        "average_precision",
+        "brier_score",
+        "log_loss",
+        "gini"
+      ],
+      "calibration_audit": [
+        "ece",
+        "mean_predicted_probability",
+        "observed_test_prevalence",
+        "reliability_bins"
+      ],
+      "classification_thresholds": [
+        0.5,
+        0.19
+      ],
+      "classification_metrics": [
+        "precision",
+        "recall",
+        "f1",
+        "accuracy",
+        "specificity",
+        "false_positive_rate",
+        "false_negative_rate",
+        "predicted_positive_rate",
+        "confusion_matrix"
+      ],
+      "confusion_matrix_order": [
+        [
+          "tn",
+          "fp"
+        ],
+        [
+          "fn",
+          "tp"
+        ]
+      ],
+      "gini_definition": "2 * ROC-AUC - 1",
+      "ece_definition": "sum(bin_count / total_count * abs(observed_positive_rate - mean_predicted_probability))",
+      "reliability_definition": {
+        "implementation": "src.calibration_analysis.reliability_bins",
+        "n_bins": 10,
+        "strategy": "quantile",
+        "duplicate_policy": "remove duplicate edges; do not split identical scores; omit empty bins"
+      }
+    },
+    "test_lock_policy": {
+      "step_14": "locked; no test evaluation, labels, prevalence or distributions inspected by this module",
+      "step_15": "evaluate only this frozen model as the final internal holdout evaluation",
+      "fit_partition": "training only; do not combine training and validation for this frozen evaluation",
+      "forbidden_after_test": [
+        "model reselection",
+        "hyperparameter changes",
+        "calibration changes",
+        "preprocessing changes",
+        "threshold changes or searches",
+        "test-driven feature selection",
+        "adding SMOTE or class weighting",
+        "switching to LightGBM based on test results"
+      ],
+      "performance_shortfall": "Report honestly even if test performance is lower than validation; do not retune."
+    },
+    "random_state": 42,
+    "limitations": [
+      "Selected from development evidence, not objectively or production best.",
+      "Repeated development use of validation can cause selection optimism.",
+      "No business cost matrix supports a bank-optimal threshold claim.",
+      "Calibration has only been audited internally on validation; scores are not regulatory or production-validated PD.",
+      "Development operating threshold 0.19 is neither a production threshold nor a regulatory cutoff.",
+      "STEP 14 contains a future test evaluation policy, not observed test metrics."
+    ]
+  },
+  "calibration": "none",
+  "random_state": 42,
+  "fit_partition": "training only",
+  "train_rows": 104998,
+  "explanation_partition": "validation",
+  "validation_rows": 22486,
+  "case_selection_policy": {
+    "order": [
+      "LOW_SCORE",
+      "MEDIAN_SCORE",
+      "HIGH_SCORE",
+      "JUST_BELOW_0_19",
+      "JUST_ABOVE_0_19",
+      "NEAR_0_50"
+    ],
+    "quantiles": {
+      "LOW_SCORE": 0.05,
+      "MEDIAN_SCORE": 0.5,
+      "HIGH_SCORE": 0.95
+    },
+    "quantile_method": "linear, calculated on full validation before exclusions",
+    "below": "highest available score strictly below 0.19",
+    "above": "lowest available score greater than or equal to 0.19",
+    "near_audit": "smallest absolute distance from 0.50",
+    "tie_break": "smaller zero-based validation row position",
+    "deduplication": "process six rules in order; skip previously selected positions within each rule's eligible ordered candidates",
+    "unavailable_rule": "raise an error if no unselected eligible observation remains; do not relax the rule",
+    "identifiers": "friendly case aliases, not actual customer IDs; validation_position is only a zero-based dataset row reference",
+    "target_used": false
+  },
+  "selected_cases": [
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "selection_rule": "LOW_SCORE",
+      "validation_position": 10274,
+      "criterion_score": 0.0060052863555029035,
+      "criterion_distance": 1.3096723705530167e-07,
+      "eligible_candidate_rank": 1,
+      "deduplication_occurred": false,
+      "skipped_selected_candidates": 0,
+      "predicted_probability": 0.006005155388265848,
+      "raw_margin": -5.109113693237305,
+      "base_value": -2.653778314590454,
+      "prediction_at_0_19": 0,
+      "prediction_at_0_50": 0,
+      "reconstructed_raw_margin": -5.109112581441877,
+      "additivity_error": 1.1117954272776842e-06,
+      "sigmoid_raw_margin": 0.006005155359738233,
+      "probability_reconciliation_error": 2.852761516597413e-11
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "selection_rule": "MEDIAN_SCORE",
+      "validation_position": 6533,
+      "criterion_score": 0.022963077761232853,
+      "criterion_distance": 6.734393537044525e-06,
+      "eligible_candidate_rank": 1,
+      "deduplication_occurred": false,
+      "skipped_selected_candidates": 0,
+      "predicted_probability": 0.02295634336769581,
+      "raw_margin": -3.750936985015869,
+      "base_value": -2.653778314590454,
+      "prediction_at_0_19": 0,
+      "prediction_at_0_50": 0,
+      "reconstructed_raw_margin": -3.750935623975238,
+      "additivity_error": 1.3610406313091516e-06,
+      "sigmoid_raw_margin": 0.022956344547980883,
+      "probability_reconciliation_error": 1.1802850745368243e-09
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "selection_rule": "HIGH_SCORE",
+      "validation_position": 19640,
+      "criterion_score": 0.333821140229702,
+      "criterion_distance": 2.697855234146118e-05,
+      "eligible_candidate_rank": 1,
+      "deduplication_occurred": false,
+      "skipped_selected_candidates": 0,
+      "predicted_probability": 0.33384811878204346,
+      "raw_margin": -0.6908316612243652,
+      "base_value": -2.653778314590454,
+      "prediction_at_0_19": 1,
+      "prediction_at_0_50": 0,
+      "reconstructed_raw_margin": -0.690831432279083,
+      "additivity_error": 2.2894528228789568e-07,
+      "sigmoid_raw_margin": 0.33384809161114676,
+      "probability_reconciliation_error": 2.717089669923567e-08
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "selection_rule": "JUST_BELOW_0_19",
+      "validation_position": 1941,
+      "criterion_score": 0.19,
+      "criterion_distance": 2.6958584785463646e-05,
+      "eligible_candidate_rank": 1,
+      "deduplication_occurred": false,
+      "skipped_selected_candidates": 0,
+      "predicted_probability": 0.18997304141521454,
+      "raw_margin": -1.4501852989196777,
+      "base_value": -2.653778314590454,
+      "prediction_at_0_19": 0,
+      "prediction_at_0_50": 0,
+      "reconstructed_raw_margin": -1.450183876833762,
+      "additivity_error": 1.4220859156921506e-06,
+      "sigmoid_raw_margin": 0.18997304996977382,
+      "probability_reconciliation_error": 8.554559283169283e-09
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "selection_rule": "JUST_ABOVE_0_19",
+      "validation_position": 22421,
+      "criterion_score": 0.19,
+      "criterion_distance": 0.00014686346054076926,
+      "eligible_candidate_rank": 1,
+      "deduplication_occurred": false,
+      "skipped_selected_candidates": 0,
+      "predicted_probability": 0.19014686346054077,
+      "raw_margin": -1.4490561485290527,
+      "base_value": -2.653778314590454,
+      "prediction_at_0_19": 1,
+      "prediction_at_0_50": 0,
+      "reconstructed_raw_margin": -1.4490557543103932,
+      "additivity_error": 3.942186594940722e-07,
+      "sigmoid_raw_margin": 0.19014686817663515,
+      "probability_reconciliation_error": 4.716094376133739e-09
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "selection_rule": "NEAR_0_50",
+      "validation_position": 11917,
+      "criterion_score": 0.5,
+      "criterion_distance": 0.0003972053527832031,
+      "eligible_candidate_rank": 1,
+      "deduplication_occurred": false,
+      "skipped_selected_candidates": 0,
+      "predicted_probability": 0.5003972053527832,
+      "raw_margin": 0.0015888018533587456,
+      "base_value": -2.653778314590454,
+      "prediction_at_0_19": 1,
+      "prediction_at_0_50": 1,
+      "reconstructed_raw_margin": 0.0015890151844359934,
+      "additivity_error": 2.1333107724785805e-07,
+      "sigmoid_raw_margin": 0.5003972003797855,
+      "probability_reconciliation_error": 4.972997680319224e-09
+    }
+  ],
+  "deduplication_occurred": false,
+  "thresholds": {
+    "development_operating": 0.19,
+    "default_audit": 0.5
+  },
+  "transformed_features": [
+    "RevolvingUtilizationOfUnsecuredLines",
+    "age",
+    "NumberOfTime30-59DaysPastDueNotWorse",
+    "DebtRatio",
+    "MonthlyIncome",
+    "NumberOfOpenCreditLinesAndLoans",
+    "NumberOfTimes90DaysLate",
+    "NumberRealEstateLoansOrLines",
+    "NumberOfTime60-89DaysPastDueNotWorse",
+    "NumberOfDependents",
+    "MonthlyIncome_missing",
+    "NumberOfDependents_missing",
+    "has_special_delinquency_value"
+  ],
+  "shap_output_shape": [
+    6,
+    13
+  ],
+  "shap_output_space": "raw margin / log-odds",
+  "base_value": -2.653778314590454,
+  "explainer": {
+    "class": "shap.TreeExplainer",
+    "model_output": "raw",
+    "feature_perturbation": "tree_path_dependent",
+    "approximate": false,
+    "shap_version": "0.52.0",
+    "background": "TRAIN path counts recorded in the fitted trees"
+  },
+  "local_additivity": {
+    "status": "PASS",
+    "rows": 6,
+    "max_absolute_error": 1.4220859156921506e-06,
+    "mean_absolute_error": 7.885694988848021e-07,
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "criterion": "abs(base + sum(SHAP) - margin) <= atol + rtol * abs(margin)"
+  },
+  "probability_reconciliation": {
+    "status": "PASS",
+    "sigmoid_of_total_margin": [
+      0.006005155359738233,
+      0.022956344547980883,
+      0.33384809161114676,
+      0.18997304996977382,
+      0.19014686817663515,
+      0.5003972003797855
+    ],
+    "absolute_errors": [
+      2.852761516597413e-11,
+      1.1802850745368243e-09,
+      2.717089669923567e-08,
+      8.554559283169283e-09,
+      4.716094376133739e-09,
+      4.972997680319224e-09
+    ],
+    "max_absolute_error": 2.717089669923567e-08,
+    "atol": 1e-07,
+    "rtol": 1e-06
+  },
+  "neutral_absolute_tolerance": 1e-08,
+  "contributions": [
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "raw_value": 0.015079147,
+      "transformed_value": 0.015079147,
+      "shap_value": -1.11143946647644,
+      "absolute_shap": 1.11143946647644,
+      "direction": "Lower model output",
+      "rank_within_case": 1
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "age",
+      "raw_value": 78.0,
+      "transformed_value": 78.0,
+      "shap_value": -0.455172598361969,
+      "absolute_shap": 0.455172598361969,
+      "direction": "Lower model output",
+      "rank_within_case": 2
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.312411099672318,
+      "absolute_shap": 0.312411099672318,
+      "direction": "Lower model output",
+      "rank_within_case": 3
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberOfTimes90DaysLate",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.207538217306137,
+      "absolute_shap": 0.207538217306137,
+      "direction": "Lower model output",
+      "rank_within_case": 4
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "raw_value": 8.0,
+      "transformed_value": 8.0,
+      "shap_value": -0.160220041871071,
+      "absolute_shap": 0.160220041871071,
+      "direction": "Lower model output",
+      "rank_within_case": 5
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.132758051156998,
+      "absolute_shap": 0.132758051156998,
+      "direction": "Lower model output",
+      "rank_within_case": 6
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "DebtRatio",
+      "raw_value": 0.253220697,
+      "transformed_value": 0.253220697,
+      "shap_value": -0.071805961430073,
+      "absolute_shap": 0.071805961430073,
+      "direction": "Lower model output",
+      "rank_within_case": 7
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberOfDependents",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.042739648371935,
+      "absolute_shap": 0.042739648371935,
+      "direction": "Lower model output",
+      "rank_within_case": 8
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "MonthlyIncome",
+      "raw_value": 4734.0,
+      "transformed_value": 4734.0,
+      "shap_value": 0.03316642716527,
+      "absolute_shap": 0.03316642716527,
+      "direction": "Higher model output",
+      "rank_within_case": 9
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberRealEstateLoansOrLines",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": 0.013742843642831,
+      "absolute_shap": 0.013742843642831,
+      "direction": "Higher model output",
+      "rank_within_case": 10
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "has_special_delinquency_value",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -0.010663093067706,
+      "absolute_shap": 0.010663093067706,
+      "direction": "Lower model output",
+      "rank_within_case": 11
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "MonthlyIncome_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.002047283574939,
+      "absolute_shap": 0.002047283574939,
+      "direction": "Higher model output",
+      "rank_within_case": 12
+    },
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "feature": "NumberOfDependents_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.000457356480183,
+      "absolute_shap": 0.000457356480183,
+      "direction": "Higher model output",
+      "rank_within_case": 13
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "raw_value": 0.299836768,
+      "transformed_value": 0.299836768,
+      "shap_value": -0.4240463078022,
+      "absolute_shap": 0.4240463078022,
+      "direction": "Lower model output",
+      "rank_within_case": 1
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.244416937232018,
+      "absolute_shap": 0.244416937232018,
+      "direction": "Lower model output",
+      "rank_within_case": 2
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberOfTimes90DaysLate",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.187807366251946,
+      "absolute_shap": 0.187807366251946,
+      "direction": "Lower model output",
+      "rank_within_case": 3
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "MonthlyIncome",
+      "raw_value": 7200.0,
+      "transformed_value": 7200.0,
+      "shap_value": -0.148849099874496,
+      "absolute_shap": 0.148849099874496,
+      "direction": "Lower model output",
+      "rank_within_case": 4
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "DebtRatio",
+      "raw_value": 0.159422302,
+      "transformed_value": 0.159422302,
+      "shap_value": -0.109720945358276,
+      "absolute_shap": 0.109720945358276,
+      "direction": "Lower model output",
+      "rank_within_case": 5
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.108982361853123,
+      "absolute_shap": 0.108982361853123,
+      "direction": "Lower model output",
+      "rank_within_case": 6
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "raw_value": 13.0,
+      "transformed_value": 13.0,
+      "shap_value": 0.10521075874567,
+      "absolute_shap": 0.10521075874567,
+      "direction": "Higher model output",
+      "rank_within_case": 7
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberRealEstateLoansOrLines",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": 0.03568122163415,
+      "absolute_shap": 0.03568122163415,
+      "direction": "Higher model output",
+      "rank_within_case": 8
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberOfDependents",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.031779985874891,
+      "absolute_shap": 0.031779985874891,
+      "direction": "Lower model output",
+      "rank_within_case": 9
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "age",
+      "raw_value": 47.0,
+      "transformed_value": 47.0,
+      "shap_value": 0.025892546400428,
+      "absolute_shap": 0.025892546400428,
+      "direction": "Higher model output",
+      "rank_within_case": 10
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "has_special_delinquency_value",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -0.009136072359979,
+      "absolute_shap": 0.009136072359979,
+      "direction": "Lower model output",
+      "rank_within_case": 11
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "NumberOfDependents_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.000457356480183,
+      "absolute_shap": 0.000457356480183,
+      "direction": "Higher model output",
+      "rank_within_case": 12
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "feature": "MonthlyIncome_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.000339883961715,
+      "absolute_shap": 0.000339883961715,
+      "direction": "Higher model output",
+      "rank_within_case": 13
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "raw_value": 1.0,
+      "transformed_value": 1.0,
+      "shap_value": 1.006519436836243,
+      "absolute_shap": 1.006519436836243,
+      "direction": "Higher model output",
+      "rank_within_case": 1
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "raw_value": 0.9999999,
+      "transformed_value": 0.9999999,
+      "shap_value": 0.910856783390045,
+      "absolute_shap": 0.910856783390045,
+      "direction": "Higher model output",
+      "rank_within_case": 2
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "age",
+      "raw_value": 26.0,
+      "transformed_value": 26.0,
+      "shap_value": 0.400472193956375,
+      "absolute_shap": 0.400472193956375,
+      "direction": "Higher model output",
+      "rank_within_case": 3
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.226440787315369,
+      "absolute_shap": 0.226440787315369,
+      "direction": "Lower model output",
+      "rank_within_case": 4
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "DebtRatio",
+      "raw_value": 251.0,
+      "transformed_value": 251.0,
+      "shap_value": 0.210270583629608,
+      "absolute_shap": 0.210270583629608,
+      "direction": "Higher model output",
+      "rank_within_case": 5
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberOfTimes90DaysLate",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.186521336436272,
+      "absolute_shap": 0.186521336436272,
+      "direction": "Lower model output",
+      "rank_within_case": 6
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "raw_value": 1.0,
+      "transformed_value": 1.0,
+      "shap_value": -0.115951016545296,
+      "absolute_shap": 0.115951016545296,
+      "direction": "Lower model output",
+      "rank_within_case": 7
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberOfDependents",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.029918054118752,
+      "absolute_shap": 0.029918054118752,
+      "direction": "Lower model output",
+      "rank_within_case": 8
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "MonthlyIncome",
+      "raw_value": null,
+      "transformed_value": 5400.0,
+      "shap_value": 0.029433902353048,
+      "absolute_shap": 0.029433902353048,
+      "direction": "Higher model output",
+      "rank_within_case": 9
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "has_special_delinquency_value",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -0.021942630410194,
+      "absolute_shap": 0.021942630410194,
+      "direction": "Lower model output",
+      "rank_within_case": 10
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberRealEstateLoansOrLines",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.012216153554618,
+      "absolute_shap": 0.012216153554618,
+      "direction": "Lower model output",
+      "rank_within_case": 11
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "MonthlyIncome_missing",
+      "raw_value": null,
+      "transformed_value": 1.0,
+      "shap_value": -0.001771217561327,
+      "absolute_shap": 0.001771217561327,
+      "direction": "Lower model output",
+      "rank_within_case": 12
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "feature": "NumberOfDependents_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.00015517808788,
+      "absolute_shap": 0.00015517808788,
+      "direction": "Higher model output",
+      "rank_within_case": 13
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "raw_value": 1.082084226,
+      "transformed_value": 1.082084226,
+      "shap_value": 1.53263795375824,
+      "absolute_shap": 1.53263795375824,
+      "direction": "Higher model output",
+      "rank_within_case": 1
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "age",
+      "raw_value": 24.0,
+      "transformed_value": 24.0,
+      "shap_value": 0.435416728258133,
+      "absolute_shap": 0.435416728258133,
+      "direction": "Higher model output",
+      "rank_within_case": 2
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.299329578876495,
+      "absolute_shap": 0.299329578876495,
+      "direction": "Lower model output",
+      "rank_within_case": 3
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "raw_value": 5.0,
+      "transformed_value": 5.0,
+      "shap_value": -0.278766930103302,
+      "absolute_shap": 0.278766930103302,
+      "direction": "Lower model output",
+      "rank_within_case": 4
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberOfTimes90DaysLate",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.185882493853569,
+      "absolute_shap": 0.185882493853569,
+      "direction": "Lower model output",
+      "rank_within_case": 5
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "DebtRatio",
+      "raw_value": 452.0,
+      "transformed_value": 452.0,
+      "shap_value": 0.17740273475647,
+      "absolute_shap": 0.17740273475647,
+      "direction": "Higher model output",
+      "rank_within_case": 6
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.141344770789146,
+      "absolute_shap": 0.141344770789146,
+      "direction": "Lower model output",
+      "rank_within_case": 7
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberOfDependents",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.029846860095859,
+      "absolute_shap": 0.029846860095859,
+      "direction": "Lower model output",
+      "rank_within_case": 8
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "has_special_delinquency_value",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -0.018738809973001,
+      "absolute_shap": 0.018738809973001,
+      "direction": "Lower model output",
+      "rank_within_case": 9
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "MonthlyIncome",
+      "raw_value": null,
+      "transformed_value": 5400.0,
+      "shap_value": 0.014072231017053,
+      "absolute_shap": 0.014072231017053,
+      "direction": "Higher model output",
+      "rank_within_case": 10
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "MonthlyIncome_missing",
+      "raw_value": null,
+      "transformed_value": 1.0,
+      "shap_value": -0.001771217561327,
+      "absolute_shap": 0.001771217561327,
+      "direction": "Lower model output",
+      "rank_within_case": 11
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberRealEstateLoansOrLines",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.000409726868384,
+      "absolute_shap": 0.000409726868384,
+      "direction": "Lower model output",
+      "rank_within_case": 12
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "feature": "NumberOfDependents_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.00015517808788,
+      "absolute_shap": 0.00015517808788,
+      "direction": "Higher model output",
+      "rank_within_case": 13
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberRealEstateLoansOrLines",
+      "raw_value": 5.0,
+      "transformed_value": 5.0,
+      "shap_value": 0.862639605998993,
+      "absolute_shap": 0.862639605998993,
+      "direction": "Higher model output",
+      "rank_within_case": 1
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "DebtRatio",
+      "raw_value": 1.012634454,
+      "transformed_value": 1.012634454,
+      "shap_value": 0.43044525384903,
+      "absolute_shap": 0.43044525384903,
+      "direction": "Higher model output",
+      "rank_within_case": 2
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "raw_value": 21.0,
+      "transformed_value": 21.0,
+      "shap_value": 0.403855234384537,
+      "absolute_shap": 0.403855234384537,
+      "direction": "Higher model output",
+      "rank_within_case": 3
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.246083155274391,
+      "absolute_shap": 0.246083155274391,
+      "direction": "Lower model output",
+      "rank_within_case": 4
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberOfTimes90DaysLate",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.184250026941299,
+      "absolute_shap": 0.184250026941299,
+      "direction": "Lower model output",
+      "rank_within_case": 5
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.113947011530399,
+      "absolute_shap": 0.113947011530399,
+      "direction": "Lower model output",
+      "rank_within_case": 6
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "raw_value": 0.417561248,
+      "transformed_value": 0.417561248,
+      "shap_value": 0.087801612913609,
+      "absolute_shap": 0.087801612913609,
+      "direction": "Higher model output",
+      "rank_within_case": 7
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "MonthlyIncome",
+      "raw_value": 5856.0,
+      "transformed_value": 5856.0,
+      "shap_value": -0.040656741708517,
+      "absolute_shap": 0.040656741708517,
+      "direction": "Lower model output",
+      "rank_within_case": 8
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "age",
+      "raw_value": 49.0,
+      "transformed_value": 49.0,
+      "shap_value": 0.030021810904145,
+      "absolute_shap": 0.030021810904145,
+      "direction": "Higher model output",
+      "rank_within_case": 9
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberOfDependents",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.015837658196688,
+      "absolute_shap": 0.015837658196688,
+      "direction": "Lower model output",
+      "rank_within_case": 10
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "has_special_delinquency_value",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -0.009652620181441,
+      "absolute_shap": 0.009652620181441,
+      "direction": "Lower model output",
+      "rank_within_case": 11
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "MonthlyIncome_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.000454587338027,
+      "absolute_shap": 0.000454587338027,
+      "direction": "Higher model output",
+      "rank_within_case": 12
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "feature": "NumberOfDependents_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -6.8331275543e-05,
+      "absolute_shap": 6.8331275543e-05,
+      "direction": "Lower model output",
+      "rank_within_case": 13
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "RevolvingUtilizationOfUnsecuredLines",
+      "raw_value": 1.030344987,
+      "transformed_value": 1.030344987,
+      "shap_value": 1.476320505142212,
+      "absolute_shap": 1.476320505142212,
+      "direction": "Higher model output",
+      "rank_within_case": 1
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+      "raw_value": 1.0,
+      "transformed_value": 1.0,
+      "shap_value": 0.843766927719116,
+      "absolute_shap": 0.843766927719116,
+      "direction": "Higher model output",
+      "rank_within_case": 2
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+      "raw_value": 2.0,
+      "transformed_value": 2.0,
+      "shap_value": 0.750779449939728,
+      "absolute_shap": 0.750779449939728,
+      "direction": "Higher model output",
+      "rank_within_case": 3
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberOfTimes90DaysLate",
+      "raw_value": 0.0,
+      "transformed_value": 0.0,
+      "shap_value": -0.123659871518612,
+      "absolute_shap": 0.123659871518612,
+      "direction": "Lower model output",
+      "rank_within_case": 4
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "MonthlyIncome",
+      "raw_value": 7220.0,
+      "transformed_value": 7220.0,
+      "shap_value": -0.105756692588329,
+      "absolute_shap": 0.105756692588329,
+      "direction": "Lower model output",
+      "rank_within_case": 5
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "DebtRatio",
+      "raw_value": 0.397313391,
+      "transformed_value": 0.397313391,
+      "shap_value": -0.089958414435387,
+      "absolute_shap": 0.089958414435387,
+      "direction": "Lower model output",
+      "rank_within_case": 6
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberOfOpenCreditLinesAndLoans",
+      "raw_value": 8.0,
+      "transformed_value": 8.0,
+      "shap_value": -0.089232325553894,
+      "absolute_shap": 0.089232325553894,
+      "direction": "Lower model output",
+      "rank_within_case": 7
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "age",
+      "raw_value": 43.0,
+      "transformed_value": 43.0,
+      "shap_value": 0.080120787024498,
+      "absolute_shap": 0.080120787024498,
+      "direction": "Higher model output",
+      "rank_within_case": 8
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberRealEstateLoansOrLines",
+      "raw_value": 1.0,
+      "transformed_value": 1.0,
+      "shap_value": -0.078386791050434,
+      "absolute_shap": 0.078386791050434,
+      "direction": "Lower model output",
+      "rank_within_case": 9
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "has_special_delinquency_value",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": -0.015401528216898,
+      "absolute_shap": 0.015401528216898,
+      "direction": "Lower model output",
+      "rank_within_case": 10
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberOfDependents",
+      "raw_value": 2.0,
+      "transformed_value": 2.0,
+      "shap_value": 0.006442394573241,
+      "absolute_shap": 0.006442394573241,
+      "direction": "Higher model output",
+      "rank_within_case": 11
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "NumberOfDependents_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 0.00030405036523,
+      "absolute_shap": 0.00030405036523,
+      "direction": "Higher model output",
+      "rank_within_case": 12
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "feature": "MonthlyIncome_missing",
+      "raw_value": null,
+      "transformed_value": 0.0,
+      "shap_value": 2.8838374419e-05,
+      "absolute_shap": 2.8838374419e-05,
+      "direction": "Higher model output",
+      "rank_within_case": 13
+    }
+  ],
+  "top_contributors": [
+    {
+      "case_id": "VAL_CASE_01_LOW",
+      "top_contributors_to_higher_model_output": [
+        {
+          "feature": "MonthlyIncome",
+          "shap_value": 0.03316642716526985
+        },
+        {
+          "feature": "NumberRealEstateLoansOrLines",
+          "shap_value": 0.013742843642830849
+        },
+        {
+          "feature": "MonthlyIncome_missing",
+          "shap_value": 0.002047283574938774
+        }
+      ],
+      "top_contributors_to_lower_model_output": [
+        {
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "shap_value": -1.1114394664764404
+        },
+        {
+          "feature": "age",
+          "shap_value": -0.455172598361969
+        },
+        {
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "shap_value": -0.3124110996723175
+        }
+      ]
+    },
+    {
+      "case_id": "VAL_CASE_02_MEDIAN",
+      "top_contributors_to_higher_model_output": [
+        {
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "shap_value": 0.10521075874567032
+        },
+        {
+          "feature": "NumberRealEstateLoansOrLines",
+          "shap_value": 0.03568122163414955
+        },
+        {
+          "feature": "age",
+          "shap_value": 0.02589254640042782
+        }
+      ],
+      "top_contributors_to_lower_model_output": [
+        {
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "shap_value": -0.4240463078022003
+        },
+        {
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "shap_value": -0.24441693723201752
+        },
+        {
+          "feature": "NumberOfTimes90DaysLate",
+          "shap_value": -0.1878073662519455
+        }
+      ]
+    },
+    {
+      "case_id": "VAL_CASE_03_HIGH",
+      "top_contributors_to_higher_model_output": [
+        {
+          "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+          "shap_value": 1.0065194368362427
+        },
+        {
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "shap_value": 0.9108567833900452
+        },
+        {
+          "feature": "age",
+          "shap_value": 0.4004721939563751
+        }
+      ],
+      "top_contributors_to_lower_model_output": [
+        {
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "shap_value": -0.22644078731536865
+        },
+        {
+          "feature": "NumberOfTimes90DaysLate",
+          "shap_value": -0.18652133643627167
+        },
+        {
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "shap_value": -0.11595101654529572
+        }
+      ]
+    },
+    {
+      "case_id": "VAL_CASE_04_BELOW_019",
+      "top_contributors_to_higher_model_output": [
+        {
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "shap_value": 1.5326379537582397
+        },
+        {
+          "feature": "age",
+          "shap_value": 0.43541672825813293
+        },
+        {
+          "feature": "DebtRatio",
+          "shap_value": 0.17740273475646973
+        }
+      ],
+      "top_contributors_to_lower_model_output": [
+        {
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "shap_value": -0.29932957887649536
+        },
+        {
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "shap_value": -0.278766930103302
+        },
+        {
+          "feature": "NumberOfTimes90DaysLate",
+          "shap_value": -0.18588249385356903
+        }
+      ]
+    },
+    {
+      "case_id": "VAL_CASE_05_ABOVE_019",
+      "top_contributors_to_higher_model_output": [
+        {
+          "feature": "NumberRealEstateLoansOrLines",
+          "shap_value": 0.8626396059989929
+        },
+        {
+          "feature": "DebtRatio",
+          "shap_value": 0.43044525384902954
+        },
+        {
+          "feature": "NumberOfOpenCreditLinesAndLoans",
+          "shap_value": 0.40385523438453674
+        }
+      ],
+      "top_contributors_to_lower_model_output": [
+        {
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "shap_value": -0.24608315527439117
+        },
+        {
+          "feature": "NumberOfTimes90DaysLate",
+          "shap_value": -0.18425002694129944
+        },
+        {
+          "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+          "shap_value": -0.11394701153039932
+        }
+      ]
+    },
+    {
+      "case_id": "VAL_CASE_06_NEAR_050",
+      "top_contributors_to_higher_model_output": [
+        {
+          "feature": "RevolvingUtilizationOfUnsecuredLines",
+          "shap_value": 1.476320505142212
+        },
+        {
+          "feature": "NumberOfTime60-89DaysPastDueNotWorse",
+          "shap_value": 0.8437669277191162
+        },
+        {
+          "feature": "NumberOfTime30-59DaysPastDueNotWorse",
+          "shap_value": 0.7507794499397278
+        }
+      ],
+      "top_contributors_to_lower_model_output": [
+        {
+          "feature": "NumberOfTimes90DaysLate",
+          "shap_value": -0.12365987151861191
+        },
+        {
+          "feature": "MonthlyIncome",
+          "shap_value": -0.10575669258832932
+        },
+        {
+          "feature": "DebtRatio",
+          "shap_value": -0.08995841443538666
+        }
+      ]
+    }
+  ],
+  "test_not_used_statement": "Local SHAP, case selection and contributor extraction use VALIDATION features and frozen model scores only. Neither validation targets nor the returned TEST partition are accessed by this workflow. The reused splitter performs its existing partition integrity checks. No final test artifact is regenerated.",
+  "interpretation_limitations": [
+    "SHAP explains this model's prediction. It does not establish causality.",
+    "Contributions are raw-margin / log-odds terms, not per-feature probability percentages.",
+    "Sigmoid is applied only to the TOTAL raw margin for reconciliation, never to individual SHAP values.",
+    "Selected cases illustrate predeclared score regions; six examples do not establish population representativeness, fairness or performance.",
+    "Top contributors are not legal adverse action reason codes, regulatory reason codes, or reasons why an observation experienced delinquency.",
+    "Scores are uncalibrated XGBoost predicted probabilities, not regulatory or production-validated PD.",
+    "Attributions depend on transformed inputs, tree-path reference counts and feature dependence; they do not establish counterfactual recourse.",
+    "The source meaning of delinquency values 96/98 remains unknown; the special indicator is not proof of fraud, error or a confirmed delinquency count.",
+    "No model, preprocessing, calibration, hyperparameter, feature or threshold decision is changed using these explanations."
+  ],
+  "raw_value_semantics": "Original predictive values before frozen preprocessing; null means missing raw value or no raw column for an engineered indicator.",
+  "transformed_value_semantics": "Actual named model input after fixed quality rules and TRAIN-median imputation; includes three engineered indicators.",
+  "runtime_seconds": {
+    "local_shap_calculation": 0.1560413000115659,
+    "fit_predict_select_explain": 5.194523399986792,
+    "load_fit_predict_select_explain": 7.591496200009715,
+    "figure_export": 15.309565100003965
+  },
+  "provenance": {
+    "freeze_commit": "b6efa63",
+    "global_shap_commit": "b87cb43",
+    "source": "data/raw/cs-training.csv",
+    "raw_dataset_sha256": "1bd46da486a5708c58c7b01a034fae2a13b327f6f7b62ea7ba4fe3b5824b24ac",
+    "frozen_specification_sha256": "e43c9e92ca101aee2d0418a7122e95bf0e6850bfed1e029cfa162bb4eded10f2"
+  }
+}
